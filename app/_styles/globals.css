@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-color-11 dark:bg-color-12;
+  }
+  h1 {
+    @apply font-bold text-4xl text-color-08 tracking-[-0.1px] leading-[33px];
+  }
+  h2 {
+    @apply font-bold text-2xl text-color-08  leading-[22px] tracking-[-0.75px];
+  }
+  h3 {
+    @apply font-bold text-[15px] text-color-08 leading-[24px]  tracking-[-0.25px];
+  }
+  h4 {
+    @apply font-bold text-[15px] text-color-08 leading-[15px]  tracking-[-0.25px];
+  }
+
+  p {
+    @apply font-medium text-[13px] leading-[18px] text-color-08 tracking-[-0.25px];
+  }
+  p .variant {
+    @apply font-medium text-[13px] leading-[15px] text-color-08 tracking-[-0.25px];
+  }
+}
+
+@layer components {
+  /* buttons */
+  .btn {
+    @apply transition-colors  duration-300 text-[15px] ease-in-out tracking-[-0.25px] font-bold rounded-[24px];
+  }
+
+  .btn-new-invoice {
+    @apply w-[150px] h-[48px] bg-color-01 text-white hover:bg-color-02 flex items-center gap-3.5 justify-start px-2;
+  }
+
+  .btn-new-invoice .plus-icon {
+    @apply bg-white w-[32px] h-[32px] rounded-full flex items-center justify-center;
+  }
+
+  .btn-paid {
+    @apply w-[131px] h-[48px] bg-color-01 text-white hover:bg-color-02;
+  }
+
+  .btn-draft {
+    @apply w-[133px] h-[48px] text-color-06 dark:text-color-05 bg-color-13 hover:bg-color-08 dark:hover:bg-color-03;
+  }
+  .btn-delete {
+    @apply w-[89px] h-[48px] bg-color-09 hover:bg-color-10 text-white;
+  }
+  .btn-edit {
+    @apply w-[73px] h-[48px] bg-color-14 text-color-07 dark:bg-color-04 dark:text-color-05 hover:bg-color-15 dark:hover:bg-white;
+  }
+  .btn-add-newitem {
+    @apply w-[350px] h-[48px] bg-color-14 hover:bg-color-15 text-color-07;
+  }
+
+  .btn-auth {
+    @apply w-full flex items-center justify-center gap-4;
+  }
+
+  /* Forms */
+
+  .section-header {
+    @apply text-[15px] leading-[15px];
+  }
+
+  .field {
+    @apply space-y-[8px];
+  }
+  .label_and_error {
+    @apply flex items-center justify-between;
+  }
+  .label_and_error .error-msg {
+    @apply leading-[15px] tracking-[0.21px] font-semibold text-[10px] text-color-09;
+  }
+
+  .field label {
+    @apply text-color-07 dark:text-color-07 text-[13px] leading-[15px] tracking-[-0.1px] font-medium;
+  }
+
+  .field input {
+    @apply border-color-05 dark:border-color-04 dark:bg-color-03 dark:text-white border rounded-[4px] h-[46px] text-color-08 font-semibold text-[15px] tracking-[-0.25px] w-full focus:outline-none focus:border-color-02  dark:focus:border-color-01 transition-colors px-4;
+  }
+
+  .field .password {
+    @apply flex items-center gap-4 pr-4 border   rounded-[4px] dark:bg-color-03 bg-white;
+  }
+
+  .field .password input {
+    @apply border-none;
+  }
+
+  .field .eye {
+    @apply text-color-07 size-5 cursor-pointer;
+  }
+
+  .field .forgot-password {
+    @apply text-base underline;
+  }
+
+  form .terms {
+    @apply text-color-07 text-[13px] font-normal text-center px-3 max-w-[400px] mx-auto;
+  }
+
+  form .terms span span {
+    @apply underline;
+  }
+
+  .or-section {
+    @apply flex items-center justify-center gap-4 mt-4;
+  }
+
+  .or-section span {
+    @apply border-b w-[40%] border-color-07;
+  }
+}
+
+@layer utilities {
+  .lds-ring,
+  .lds-ring div {
+    box-sizing: border-box;
+  }
+  .lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    margin: 8px;
+    border: 6px solid currentColor;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #7c5dfa transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
