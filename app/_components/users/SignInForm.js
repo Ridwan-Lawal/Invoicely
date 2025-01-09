@@ -7,6 +7,7 @@ import { Eye, EyeClosed, Github, GithubIcon } from "lucide-react";
 import Image from "next/image";
 import Terms from "@/app/_components/users/Terms";
 import { useRouter } from "next/navigation";
+import { githubSignInAction, googleSignInAction } from "@/app/_lib/actions";
 
 function SigninForm() {
   const router = useRouter();
@@ -15,7 +16,7 @@ function SigninForm() {
     usePasswordVisibility();
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8">
+    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-14">
       <div className="flex flex-col  h-screen gap-8 justify-center w-full">
         {/* Logo */}
         <div className="flex flex-col items-center gap-4">
@@ -104,7 +105,10 @@ function SigninForm() {
           </p>
           {/* google */}
           <div className="mt-4 space-y-4">
-            <button className="btn btn-edit btn-auth">
+            <button
+              className="btn btn-edit btn-auth "
+              onClick={() => googleSignInAction()}
+            >
               <Image
                 src={googleIcon}
                 alt="google icon"
@@ -115,7 +119,10 @@ function SigninForm() {
             </button>
 
             {/* github */}
-            <button className="btn btn-draft btn-auth">
+            <button
+              className="btn btn-draft btn-auth"
+              onClick={() => githubSignInAction()}
+            >
               <GithubIcon className="text-gray-300" />
               <span>Sign in with Github</span>
             </button>

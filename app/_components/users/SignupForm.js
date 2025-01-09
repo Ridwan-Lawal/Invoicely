@@ -7,7 +7,11 @@ import { CheckCircle, Eye, EyeClosed, Github, GithubIcon } from "lucide-react";
 import Image from "next/image";
 import Terms from "@/app/_components/users/Terms";
 import { useActionState, useEffect } from "react";
-import { signupAction } from "@/app/_lib/actions";
+import {
+  githubSignInAction,
+  googleSignInAction,
+  signupAction,
+} from "@/app/_lib/actions";
 import toast from "react-hot-toast";
 import { customErrorToast, customSuccessToast } from "@/app/_lib/helpers";
 import { useRouter } from "next/navigation";
@@ -25,7 +29,7 @@ function SignupForm() {
     if (state === undefined || state === null) return;
     if (state?.success) {
       customSuccessToast(state?.message);
-      router.push("/");
+      router.push("/welcome");
     } else if (state?.success === false) {
       customErrorToast(state?.message);
     }
@@ -33,7 +37,7 @@ function SignupForm() {
 
   return (
     <div
-      className="flex flex-col items-center h-screen justify-center gap-8 overflow-auto mt-8
+      className="flex flex-col items-center h-screen justify-center gap-8 overflow-auto mt-8 pb-12
     "
     >
       {/* Logo */}
@@ -71,6 +75,7 @@ function SignupForm() {
                 type="text"
                 autoComplete="email"
                 name="email"
+                disabled={isPending}
                 id="email"
                 defaultValue={input?.email}
                 style={{ border: errors?.email?.at(0) && "1px solid #EC5757" }}
@@ -101,6 +106,7 @@ function SignupForm() {
                   ref={passwordShowRef}
                   type={isShowPassword ? "text" : "password"}
                   name="password"
+                  disabled={isPending}
                   defaultValue={input?.password}
                   autoComplete="password"
                   id="password"
@@ -135,7 +141,11 @@ function SignupForm() {
         </p>
         {/* google */}
         <div className="mt-4 space-y-4">
-          <button disabled={isPending} className="btn btn-edit btn-auth">
+          <button
+            disabled={isPending}
+            className="btn btn-edit btn-auth"
+            onClick={() => googleSignInAction()}
+          >
             <Image
               src={googleIcon}
               alt="google icon"
@@ -146,7 +156,11 @@ function SignupForm() {
           </button>
 
           {/* github */}
-          <button disabled={isPending} className="btn btn-draft btn-auth">
+          <button
+            disabled={isPending}
+            className="btn btn-draft btn-auth"
+            onClick={() => githubSignInAction()}
+          >
             <GithubIcon className="text-gray-300" />
             <span>Sign in with Github</span>
           </button>
