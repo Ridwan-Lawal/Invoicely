@@ -30,10 +30,13 @@ function Welcome() {
           How may i address you?
         </h2>
       </div>
-      <form action={formAction} className="w-full max-w-[400px] mx-auto">
+      <form
+        action={formAction}
+        className="w-full max-w-[400px] mx-auto flex flex-col space-y-5"
+      >
         <div className="field">
           <div className="label_and_error">
-            <label htmlFor="name">Your Name </label>
+            <label htmlFor="name">Your Name* </label>
             {errors?.name?.at(0) && (
               <span className="error-msg">{errors?.name?.at(0)}</span>
             )}
@@ -50,10 +53,35 @@ function Welcome() {
           />
         </div>
 
+        {/* avatar upload */}
+        <div className="field">
+          <div className="label_and_error">
+            <label htmlFor="avatar">Upload an avatar (optional) </label>
+            {errors?.name?.at(0) && (
+              <span className="error-msg">{errors?.name?.at(0)}</span>
+            )}
+          </div>
+
+          <input
+            type="file"
+            name="avatar"
+            id="avatar"
+            style={{
+              color: "#888EB0",
+              fontWeight: 400,
+              border: "none",
+              padding: 0,
+            }}
+            disabled={isPending}
+            accept="image/*"
+            className="text-color-07 file:bg-color-01 file:text-white file:outline-none file:border-none file:py-2.5 file:px-6 file:rounded-md file:font-medium file:cursor-pointer file:ml-0 file:mr-8"
+          />
+        </div>
+
         <button
           disabled={isPending}
           style={{ opacity: isPending && 0.8 }}
-          className="btn btn-paid w-full mt-4 rounded-lg"
+          className="btn btn-paid w-full mt-5 rounded-lg"
         >
           {isPending ? "Loading dashboard..." : "Continue to dashboard"}
         </button>
@@ -64,6 +92,7 @@ function Welcome() {
 
 export default Welcome;
 
-// do the google and github sign in
 // do the login
+// and also when a user, is in the homepage, they should not be able to visit the /welcome page
 // also configure it, that when a user is logged in he should not be able to go back to the login or signup page
+// add animation to the /welcome page
