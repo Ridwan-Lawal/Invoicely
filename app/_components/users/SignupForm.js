@@ -33,7 +33,7 @@ function SignupForm() {
 
   return (
     <div
-      className="flex flex-col items-center h-screen justify-center gap-8 overflow-auto mt-8
+      className="flex flex-col items-center h-screen justify-center gap-8 overflow-auto mt-8 pb-12
     "
     >
       {/* Logo */}
@@ -71,6 +71,7 @@ function SignupForm() {
                 type="text"
                 autoComplete="email"
                 name="email"
+                disabled={isPending}
                 id="email"
                 defaultValue={input?.email}
                 style={{ border: errors?.email?.at(0) && "1px solid #EC5757" }}
@@ -101,6 +102,7 @@ function SignupForm() {
                   ref={passwordShowRef}
                   type={isShowPassword ? "text" : "password"}
                   name="password"
+                  disabled={isPending}
                   defaultValue={input?.password}
                   autoComplete="password"
                   id="password"
