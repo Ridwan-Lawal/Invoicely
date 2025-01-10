@@ -50,6 +50,17 @@ export async function updateSession(request) {
     return NextResponse.redirect(url);
   }
 
+  if (user) {
+    if (
+      request.nextUrl.pathname.startsWith("/user/signin") ||
+      request.nextUrl.pathname.startsWith("/user/signup") ||
+      request.nextUrl.pathname.startsWith("/user/welcome")
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

@@ -92,7 +92,4 @@ function Welcome() {
 
 export default Welcome;
 
-// do the login
-// and also when a user, is in the homepage, they should not be able to visit the /welcome page
-// also configure it, that when a user is logged in he should not be able to go back to the login or signup page
 // add animation to the /welcome page
