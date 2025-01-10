@@ -7,16 +7,36 @@ import { Eye, EyeClosed, Github, GithubIcon } from "lucide-react";
 import Image from "next/image";
 import Terms from "@/app/_components/users/Terms";
 import { useRouter } from "next/navigation";
-import { githubSignInAction, googleSignInAction } from "@/app/_lib/actions";
+import {
+  githubSignInAction,
+  googleSignInAction,
+  signInAction,
+} from "@/app/_lib/actions";
+import { useActionState, useEffect } from "react";
+import { customErrorToast, customSuccessToast } from "@/app/_lib/helpers";
 
 function SigninForm() {
+  const [state, formAction, isPending] = useActionState(signInAction, null);
+
+  const { errors, inputs } = state ?? {};
+
   const router = useRouter();
   const { isPasswordInputOnFocus, passwordRef } = usePasswordInputFocus();
   const { passwordShowRef, isShowPassword, handlePasswordVisibility } =
     usePasswordVisibility();
 
+  console.log(state);
+
+  useEffect(() => {
+    if (state === undefined || state === null) return;
+    else if (state?.success) {
+      customSuccessToast(state?.message);
+      router.push("/");
+    } else if (state?.success === false) customErrorToast(state?.message);
+  }, [state]);
+
   return (
-    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-14">
+    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
       <div className="flex flex-col  h-screen gap-8 justify-center w-full">
         {/* Logo */}
         <div className="flex flex-col items-center gap-4">
@@ -38,18 +58,22 @@ function SigninForm() {
          */}
 
         <div>
-          <form action="">
+          <form action={formAction}>
             {/* Email */}
             <div className="space-y-5 mb-2">
               <div className="field">
                 <div className="label_and_error">
                   <label htmlFor="email">Email address </label>
-                  <span className="error-msg">Lorem, ipsum dolor.</span>
+                  {errors?.email?.at(0) && (
+                    <span className="error-msg">{errors?.email?.at(0)}</span>
+                  )}
                 </div>
 
                 <input
                   type="text"
                   name="email"
+                  disabled={isPending}
+                  defaultValue={inputs?.email}
                   autoComplete="email"
                   id="email"
                 />
@@ -60,7 +84,9 @@ function SigninForm() {
                 <div className="label_and_error ">
                   <label htmlFor="password">Password </label>
 
-                  <span className="error-msg">Lorem, ipsum dolor.</span>
+                  {errors?.password?.at(0) && (
+                    <span className="error-msg">{errors?.password?.at(0)}</span>
+                  )}
                 </div>
 
                 <div
@@ -75,6 +101,8 @@ function SigninForm() {
                     ref={passwordShowRef}
                     type={isShowPassword ? "text" : "password"}
                     name="password"
+                    defaultValue={inputs?.password}
+                    disabled={isPending}
                     autoComplete="password"
                     id="password"
                   />
@@ -95,8 +123,12 @@ function SigninForm() {
               Forgot Password?
             </p>
 
-            <button className="btn btn-paid w-full h-[46px] mt-6">
-              Continue to Sign In
+            <button
+              disabled={isPending}
+              style={{ opacity: isPending && 0.8 }}
+              className="btn btn-paid w-full h-[46px] mt-6"
+            >
+              {isPending ? "Signing in..." : "Continue to Sign In"}
             </button>
           </form>
 
@@ -144,7 +176,3 @@ function SigninForm() {
 }
 
 export default SigninForm;
-
-{
-  /* */
-}

@@ -144,7 +144,7 @@ export async function addNameToSessionAction(prevState, formData) {
     };
   }
 
-  revalidatePath("/welcome");
+  revalidatePath("/user/welcome");
 
   return {
     success: true,
@@ -190,4 +190,48 @@ export async function githubSignInAction() {
   if (data.url) {
     redirect(data.url);
   }
+}
+
+export async function signInAction(prevState, formData) {
+  const supabase = await createClient();
+  // Build and ensuring data safety
+  const userCredentials = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+
+  const {
+    data: userData,
+    success: validationSuccess,
+    error: validationError,
+  } = User.safeParse(userCredentials) ?? {};
+
+  if (!validationSuccess) {
+    return {
+      errors: validationError?.flatten()?.fieldErrors,
+      inputs: userCredentials,
+    };
+  }
+
+  //   Login mutation
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: userData?.email,
+    password: userData?.password,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  revalidatePath("/user");
+  console.log(data);
+
+  return {
+    success: true,
+    message: `Welcome back, ${data?.user?.user_metadata?.display_name}`,
+  };
 }

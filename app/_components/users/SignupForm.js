@@ -36,145 +36,146 @@ function SignupForm() {
   }, [state]);
 
   return (
-    <div
-      className="flex flex-col items-center h-screen justify-center gap-8 overflow-auto mt-8 pb-12
-    "
-    >
-      {/* Logo */}
-      <div className="flex flex-col items-center gap-4">
-        <div className="relative h-16 w-16">
-          <Image
-            src={LogoAuth}
-            alt="logo"
-            quality={100}
-            fill
-            className="object-contain"
-            priority={true}
-          />
+    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
+      <div className="flex flex-col  h-screen gap-8 justify-center w-full">
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative h-16 w-16">
+            <Image
+              src={LogoAuth}
+              alt="logo"
+              quality={100}
+              fill
+              className="object-contain"
+              priority={true}
+            />
+          </div>
+
+          <h2 className="text-center text-color-02">Invoicely</h2>
         </div>
 
-        <h2 className="text-center text-color-02">Invoicely</h2>
-      </div>
+        {/* form
+         */}
 
-      {/* form
-       */}
-
-      <div>
-        <form action={formAction}>
-          {/* Email */}
-          <div className="space-y-5 mb-2">
-            <div className="field">
-              <div className="label_and_error">
-                <label htmlFor="email">Email address </label>
-                {errors?.email?.at(0) && (
-                  <span className="error-msg">{errors?.email?.at(0)}</span>
-                )}
-              </div>
-
-              <input
-                type="text"
-                autoComplete="email"
-                name="email"
-                disabled={isPending}
-                id="email"
-                defaultValue={input?.email}
-                style={{ border: errors?.email?.at(0) && "1px solid #EC5757" }}
-              />
-            </div>
-
-            {/* password */}
-            <div className="field">
-              <div className="label_and_error ">
-                <label htmlFor="password">Password </label>
-
-                {errors?.password?.at(0) && (
-                  <span className="error-msg">{errors?.password?.at(0)}</span>
-                )}
-              </div>
-
-              <div
-                ref={passwordRef}
-                className={`password ${
-                  isPasswordInputOnFocus
-                    ? "border border-color-02  dark:border-color-01 "
-                    : errors?.password?.at(0)
-                    ? "border-color-09"
-                    : "border-color-05 dark:border-color-04"
-                }`}
-              >
-                <input
-                  ref={passwordShowRef}
-                  type={isShowPassword ? "text" : "password"}
-                  name="password"
-                  disabled={isPending}
-                  defaultValue={input?.password}
-                  autoComplete="password"
-                  id="password"
-                />
-
-                <div onClick={handlePasswordVisibility}>
-                  {isShowPassword ? (
-                    <EyeClosed className="eye" />
-                  ) : (
-                    <Eye className="eye" />
+        <div>
+          <form action={formAction}>
+            {/* Email */}
+            <div className="space-y-5 mb-2">
+              <div className="field">
+                <div className="label_and_error">
+                  <label htmlFor="email">Email address </label>
+                  {errors?.email?.at(0) && (
+                    <span className="error-msg">{errors?.email?.at(0)}</span>
                   )}
+                </div>
+
+                <input
+                  type="text"
+                  autoComplete="email"
+                  name="email"
+                  disabled={isPending}
+                  id="email"
+                  defaultValue={input?.email}
+                  style={{
+                    border: errors?.email?.at(0) && "1px solid #EC5757",
+                  }}
+                />
+              </div>
+
+              {/* password */}
+              <div className="field">
+                <div className="label_and_error ">
+                  <label htmlFor="password">Password </label>
+
+                  {errors?.password?.at(0) && (
+                    <span className="error-msg">{errors?.password?.at(0)}</span>
+                  )}
+                </div>
+
+                <div
+                  ref={passwordRef}
+                  className={`password ${
+                    isPasswordInputOnFocus
+                      ? "border border-color-02  dark:border-color-01 "
+                      : errors?.password?.at(0)
+                      ? "border-color-09"
+                      : "border-color-05 dark:border-color-04"
+                  }`}
+                >
+                  <input
+                    ref={passwordShowRef}
+                    type={isShowPassword ? "text" : "password"}
+                    name="password"
+                    disabled={isPending}
+                    defaultValue={input?.password}
+                    autoComplete="password"
+                    id="password"
+                  />
+
+                  <div onClick={handlePasswordVisibility}>
+                    {isShowPassword ? (
+                      <EyeClosed className="eye" />
+                    ) : (
+                      <Eye className="eye" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Terms and condition */}
+            <Terms />
+
+            <button
+              disabled={isPending}
+              className={`btn btn-paid w-full h-[46px] mt-6 ${
+                isPending && "opacity-80"
+              }`}
+            >
+              {isPending ? "Signing up..." : "Continue to Sign up"}
+            </button>
+          </form>
+
+          <p className="text-[15px] text-color-07 or-section">
+            <span></span>OR <span></span>
+          </p>
+          {/* google */}
+          <div className="mt-4 space-y-4">
+            <button
+              disabled={isPending}
+              className="btn btn-edit btn-auth"
+              onClick={() => googleSignInAction()}
+            >
+              <Image
+                src={googleIcon}
+                alt="google icon"
+                quality={100}
+                priority={true}
+              />
+              <span>Sign in with Google</span>
+            </button>
+
+            {/* github */}
+            <button
+              disabled={isPending}
+              className="btn btn-draft btn-auth"
+              onClick={() => githubSignInAction()}
+            >
+              <GithubIcon className="text-gray-300" />
+              <span>Sign in with Github</span>
+            </button>
           </div>
 
-          {/* Terms and condition */}
-          <Terms />
-
-          <button
-            disabled={isPending}
-            className={`btn btn-paid w-full h-[46px] mt-6 ${
-              isPending && "opacity-80"
-            }`}
-          >
-            {isPending ? "Signing up..." : "Continue to Sign up"}
-          </button>
-        </form>
-
-        <p className="text-[15px] text-color-07 or-section">
-          <span></span>OR <span></span>
-        </p>
-        {/* google */}
-        <div className="mt-4 space-y-4">
-          <button
-            disabled={isPending}
-            className="btn btn-edit btn-auth"
-            onClick={() => googleSignInAction()}
-          >
-            <Image
-              src={googleIcon}
-              alt="google icon"
-              quality={100}
-              priority={true}
-            />
-            <span>Sign in with Google</span>
-          </button>
-
-          {/* github */}
-          <button
-            disabled={isPending}
-            className="btn btn-draft btn-auth"
-            onClick={() => githubSignInAction()}
-          >
-            <GithubIcon className="text-gray-300" />
-            <span>Sign in with Github</span>
-          </button>
+          <p className="text-[15px] text-center mt-4">
+            Already have an account?{" "}
+            <span
+              className="text-color-02 underline ml-2 cursor-pointer"
+              onClick={() => router.push("/user/signin")}
+            >
+              Sign in
+            </span>
+          </p>
         </div>
-
-        <p className="text-[15px] text-center mt-4">
-          Already have an account?{" "}
-          <span
-            className="text-color-02 underline ml-2 cursor-pointer"
-            onClick={() => router.push("/user/signin")}
-          >
-            Sign in
-          </span>
-        </p>
       </div>
     </div>
   );
