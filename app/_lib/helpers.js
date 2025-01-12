@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { CheckCircle, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -65,4 +66,8 @@ export function customErrorToast(message) {
       position: "top-right",
     }
   );
+}
+
+export function formatDate(date) {
+  return format(date, "dd MMM yyyy");
 }

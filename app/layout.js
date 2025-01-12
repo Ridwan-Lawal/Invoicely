@@ -13,15 +13,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  console.log(user);
   return (
     <html lang="en">
-      <body className={`${spartan.className} antialiased `}>
+      <body
+        className={`${spartan.className} antialiased min-h-screen  no-scrollbar`}
+      >
         {children}
         <Toaster />
       </body>

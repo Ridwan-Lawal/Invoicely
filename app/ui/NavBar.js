@@ -6,12 +6,12 @@ import avatar from "@/public/image-avatar.jpg";
 
 function NavBar() {
   return (
-    <nav className="bg-color-13 border h-[75px] flex items-center justify-between">
+    <nav className="nav lgl:rounded-r-3xl">
       {/* logo */}
-      <div className="relative overflow-hidden rounded-r-[20px] flex flex-col items-center justify-center">
-        <div className=" bg-color-01  w-[72px] h-[73px] flex items-center justify-center overflow-hidden  "></div>
+      <div className="relative overflow-hidden rounded-r-[20px] flex flex-col items-center justify-center w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] ">
+        <div className=" bg-color-01  w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] flex items-center justify-center overflow-hidden  "></div>
 
-        <div className="absolute top-[50%] bg-color-02  w-[72px] h-[73px] flex items-center justify-center  rounded-l-3xl"></div>
+        <div className="absolute top-[50%] bg-color-02  w-[72px] h-[73px]  md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px]  flex items-center justify-center  rounded-l-3xl"></div>
 
         <Image
           src={LogoWhite}
@@ -21,7 +21,7 @@ function NavBar() {
         />
       </div>
 
-      <div className="flex items-center ">
+      <div className="flex items-center justify-center gap-6 md:gap-6 lgl:flex-col">
         {/* theme toggle */}
         <div>
           <button>
@@ -30,8 +30,8 @@ function NavBar() {
         </div>
 
         {/* Avatar */}
-        <div>
-          <div className="relative w-[32px] h-[32px] rounded-full">
+        <div className="avatar">
+          <div className="relative w-[32px] h-[32px] rounded-full overflow-hidden">
             <Image
               src={avatar}
               alt="avatar"
