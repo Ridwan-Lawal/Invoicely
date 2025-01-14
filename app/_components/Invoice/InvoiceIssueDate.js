@@ -3,6 +3,7 @@
 import { Calendar as CalenderIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
+import { useCloseModalOnBlur } from "@/app/_hooks/useCloseModalOnBlur";
 
 function InvoiceIssueDate({
   children,
@@ -14,13 +15,15 @@ function InvoiceIssueDate({
 
   const onOpenCalendar = () => setIsCalenderOpen((cur) => !cur);
 
+  useCloseModalOnBlur(setIsCalenderOpen);
+
   return (
     <div className="field">
       <div className="label_and_error">
         <label htmlFor={children?.props?.name}>Issue Date</label>
       </div>
 
-      <div className="payment-terms space-y-3 ">
+      <div className="payment-terms space-y-3  dropdown">
         {/* select */}
         <div
           onClick={onOpenCalendar}
@@ -32,9 +35,7 @@ function InvoiceIssueDate({
         >
           {children}
 
-          <button>
-            <CalenderIcon className="size-5 text-color-01" />
-          </button>
+          <CalenderIcon className="size-5 text-color-01 cursor-pointer" />
         </div>
 
         {/* options */}

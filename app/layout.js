@@ -1,3 +1,4 @@
+import StoreProvider from "@/app/_lib/redux/StoreProvider";
 import { createClient } from "@/app/_lib/supabase/server";
 import { spartan } from "@/app/_styles/font";
 import "@/app/_styles/globals.css";
@@ -18,7 +19,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${spartan.className} antialiased min-h-screen  no-scrollbar`}
       >
-        {children}
+        <StoreProvider>{children}</StoreProvider>
         <Toaster />
       </body>
     </html>

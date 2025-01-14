@@ -51,17 +51,20 @@
   }
 
   .btn-paid {
-    @apply w-[131px] h-[48px] bg-color-01 text-white hover:bg-color-02;
+    @apply w-[112px] md:w-[131px] h-[48px] bg-color-01 text-white hover:bg-color-02;
   }
 
   .btn-draft {
-    @apply w-[133px] h-[48px] text-color-06 dark:text-color-05 bg-color-13 hover:bg-color-08 dark:hover:bg-color-03;
+    @apply w-[117px] md:w-[133px] h-[48px] text-color-06 dark:text-color-05 bg-color-13 hover:bg-color-08 dark:hover:bg-color-03;
   }
   .btn-delete {
     @apply w-[89px] h-[48px] bg-color-09 hover:bg-color-10 text-white;
   }
   .btn-edit {
     @apply w-[73px] h-[48px] bg-color-14 text-color-07 dark:bg-color-04 dark:text-color-05 hover:bg-color-15 dark:hover:bg-white;
+  }
+  .btn-cancel {
+    @apply w-[84px] h-[48px] md:w-[96px] bg-color-14 text-color-07 dark:bg-color-04 dark:text-color-05 hover:bg-color-15;
   }
   .btn-add-newitem {
     @apply w-[350px] h-[48px] bg-color-14 hover:bg-color-15 text-color-07;
@@ -140,14 +143,22 @@
 
   /* Invoice form */
   .invoice-form-overlay {
-    @apply bg-black bg-opacity-30 backdrop-blur-[2px] grid flex-1;
+    @apply bg-black bg-opacity-30 backdrop-blur-[2px] grid  border-2 border-purple-600;
   }
 
   .invoice-form-container {
-    @apply bg-white md:w-[616px] w-full border-2 border-green-600 dark:bg-color-12;
+    @apply bg-white  w-full border-2 border-green-600 dark:bg-color-12;
   }
   .invoice-form-parent-element {
-    @apply border-2 h-[460px] lgl:h-[87vh] border-purple-800 overflow-y-scroll px-6 scrollbar-thin md:px-8;
+    @apply border-2  border-purple-800;
+  }
+
+  .form-overflow {
+    @apply h-[67vh] lgl:h-[82vh] overflow-y-scroll  scrollbar-thin sm:px-14  px-6 pb-16;
+  }
+
+  .invoice-form .button-section {
+    @apply border border-purple-800 h-[13vh] lgl:h-[15vh] sm:px-8  px-6;
   }
 
   .invoice-form fieldset {
@@ -169,6 +180,10 @@
 
 .invoice-form .payment-terms li {
   @apply font-semibold text-[15px] leading-[15px] tracking-[-0.25px] text-color-08 dark:text-color-05 cursor-pointer hover:text-color-01 transition-colors py-3.5 px-6;
+}
+
+.invoice-form .item-list {
+  @apply text-color-17 text-lg leading-[32px] font-bold tracking-[-0.32px];
 }
 
 @layer utilities {
@@ -211,6 +226,10 @@
       transform: rotate(360deg);
     }
   }
+
+  .top-shadow-medium {
+    box-shadow: 0 -40px 50px -20px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .no-scrollbar {
@@ -225,4 +244,14 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: #dfe3fa #ffffff;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

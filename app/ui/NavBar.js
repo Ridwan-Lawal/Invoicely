@@ -1,12 +1,12 @@
 import LogoWhite from "@/public/logo-white.svg";
 import Image from "next/image";
-import IconMoon from "@/public/icon-moon.svg";
-import IconSun from "@/public/icon-sun.svg";
+
 import avatar from "@/public/image-avatar.jpg";
+import ThemeButton from "@/app/ui/ThemeButton";
 
 function NavBar() {
   return (
-    <nav className="nav lgl:rounded-r-3xl">
+    <nav className="nav lgl:rounded-r-3xl lgl:w-[103px]">
       {/* logo */}
       <div className="relative overflow-hidden rounded-r-[20px] flex flex-col items-center justify-center w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] ">
         <div className=" bg-color-01  w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] flex items-center justify-center overflow-hidden  "></div>
@@ -24,9 +24,7 @@ function NavBar() {
       <div className="flex items-center justify-center gap-6 md:gap-6 lgl:flex-col">
         {/* theme toggle */}
         <div>
-          <button>
-            <Image src={IconMoon} alt="theme" quality={100} />
-          </button>
+          <ThemeButton />
         </div>
 
         {/* Avatar */}

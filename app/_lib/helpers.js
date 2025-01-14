@@ -71,3 +71,32 @@ export function customErrorToast(message) {
 export function formatDate(date) {
   return format(date, "dd MMM yyyy");
 }
+
+export function formatCurrency(price) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(price);
+}
+
+export function generateInvoiceId() {
+  const letters = Array.from(Array(26)).map((_, index) =>
+    String.fromCharCode(65 + index)
+  );
+
+  const numbers = Array.from({ length: 9 }, (_, index) => index + 1);
+
+  const lettersId = Array.from(
+    { length: 2 },
+    (_, i) => letters[Math.floor(Math.random() * 26)]
+  );
+
+  const numbersId = Array.from(
+    { length: 4 },
+    (_, i) => numbers[Math.floor(Math.random() * 9)]
+  );
+
+  const combinedId = [...lettersId, ...numbersId].join("");
+
+  return combinedId;
+}

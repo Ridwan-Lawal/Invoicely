@@ -9,7 +9,7 @@ export default function Layout({ children }) {
 
         <InvoiceForm />
       </div>
-      <main className="h-screen overflow-auto">{children}</main>
+      <main className="min-h-screen overflow-auto">{children}</main>
     </div>
   );
 }
