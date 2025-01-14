@@ -1,3 +1,4 @@
+import StoreProvider from "@/app/_lib/redux/StoreProvider";
 import { createClient } from "@/app/_lib/supabase/server";
 import { spartan } from "@/app/_styles/font";
 import "@/app/_styles/globals.css";
@@ -13,16 +14,12 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  console.log(user);
   return (
     <html lang="en">
-      <body className={`${spartan.className} antialiased `}>
-        {children}
+      <body
+        className={`${spartan.className} antialiased min-h-screen  no-scrollbar`}
+      >
+        <StoreProvider>{children}</StoreProvider>
         <Toaster />
       </body>
     </html>

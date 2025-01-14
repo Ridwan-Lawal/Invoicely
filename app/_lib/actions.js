@@ -235,3 +235,46 @@ export async function signInAction(prevState, formData) {
     message: `Welcome back, ${data?.user?.user_metadata?.display_name}`,
   };
 }
+
+// Invoice
+
+export async function addInvoiceAction(invoice) {
+  const supabase = await createClient();
+
+  // check if user exist
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be signed in to create new invoice!",
+    };
+  }
+
+  // mutation
+
+  const { data, error } = await supabase
+    .from("invoice")
+    .insert([{ ...invoice, user_id: user?.id }])
+    .select();
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+  console.log(data, "data");
+
+  revalidatePath("/");
+
+  return {
+    success: true,
+    message: `invoice 
+    #${data?.[0]?.id} ${
+      data?.[0]?.status === "pending" ? "created" : "drafted"
+    } successfully`,
+  };
+}
