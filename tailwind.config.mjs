@@ -29,6 +29,8 @@ export default {
         "color-15": "#DFE3FA",
         "color-16": "#494E6E",
         "color-17": "#777F98",
+        "color-18": "#33D69F",
+        "color-19": "#FF8F00",
       },
       ".scrollbar": {
         "&::-webkit-scrollbar": {
