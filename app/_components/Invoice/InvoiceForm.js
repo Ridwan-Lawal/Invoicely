@@ -53,8 +53,6 @@ const schema = z.object({
   ),
 });
 
-// begin the dashboard
-
 function InvoiceForm({ formType = "create" }) {
   const { passwordRef, isPasswordInputOnFocus } = usePasswordInputFocus();
 
@@ -158,7 +156,7 @@ function InvoiceForm({ formType = "create" }) {
         isInvoiceFormOpen
           ? "w-full bg-opacity-30 flex-1"
           : "w-0  overflow-hidden bg-opacity-0 flex-0 pointer-events-none"
-      }    lgl:-ml-5 transition-all ease-in-out inset-0`}
+      }    lgl:-ml-5 fixed transition-all ease-in-out inset-0 z-50 top-[73px]  md:top-[80px] lgl:top-0 lgl:left-[103px] lgl:z-40 duration-300`}
     >
       <div
         className={` invoice-form-container ${

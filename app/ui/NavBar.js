@@ -6,7 +6,7 @@ import ThemeButton from "@/app/ui/ThemeButton";
 
 function NavBar() {
   return (
-    <nav className="nav lgl:rounded-r-3xl lgl:w-[103px]">
+    <nav className="nav lgl:rounded-r-3xl lgl:w-[103px] lgl:z-50">
       {/* logo */}
       <div className="relative overflow-hidden rounded-r-[20px] flex flex-col items-center justify-center w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] ">
         <div className=" bg-color-01  w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] flex items-center justify-center overflow-hidden  "></div>

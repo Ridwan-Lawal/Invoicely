@@ -28,8 +28,15 @@
   p {
     @apply font-medium text-[13px] leading-[18px] text-color-08 tracking-[-0.25px];
   }
-  p .variant {
+  p.variant {
     @apply font-medium text-[13px] leading-[15px] text-color-08 tracking-[-0.25px];
+  }
+
+  p.variant-2 {
+    @apply font-medium text-[13px] leading-[15px] text-color-07 tracking-[-0.25px];
+  }
+  p.variant-3 {
+    @apply text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
   }
   :root {
     --radius: 0.5rem;
@@ -43,7 +50,7 @@
   }
 
   .btn-new-invoice {
-    @apply w-[150px] h-[48px] bg-color-01 text-white hover:bg-color-02 flex items-center gap-3.5 justify-start px-2;
+    @apply w-[90px] h-[44px] md:w-[150px] md:h-[48px] bg-color-01 text-white hover:bg-color-02 flex items-center gap-2 md:gap-3.5 justify-start px-2;
   }
 
   .btn-new-invoice .plus-icon {
@@ -150,11 +157,11 @@
     @apply bg-white  w-full border-2 border-green-600 dark:bg-color-12;
   }
   .invoice-form-parent-element {
-    @apply border-2  border-purple-800;
+    @apply border-2  border-purple-800 h-screen;
   }
 
   .form-overflow {
-    @apply h-[67vh] lgl:h-[82vh] overflow-y-scroll  scrollbar-thin sm:px-14  px-6 pb-16;
+    @apply h-[69vh] lgl:h-[82vh] overflow-y-scroll  scrollbar-thin sm:px-14  px-6 pb-16;
   }
 
   .invoice-form .button-section {
@@ -168,22 +175,51 @@
   .invoice-form legend {
     @apply text-[15px] leading-[15px] tracking-[-0.25px] font-bold text-color-01;
   }
+
+  .invoice-form .payment-terms .options {
+    @apply h-[191px] rounded-[8px]  py-2 shadow-xl shadow-color-05 dark:shadow-color-12 absolute top-0 bg-white dark:bg-color-04 w-full;
+  }
+
+  .invoice-form .payment-terms .calendar {
+    @apply rounded-[8px]   shadow-xl shadow-color-05 dark:shadow-color-12 absolute top-0 bg-white dark:bg-color-04 w-full;
+  }
+
+  .invoice-form .payment-terms li {
+    @apply font-semibold text-[15px] leading-[15px] tracking-[-0.25px] text-color-08 dark:text-color-05 cursor-pointer hover:text-color-01 transition-colors py-3.5 px-6;
+  }
+
+  .invoice-form .item-list {
+    @apply text-color-17 text-lg leading-[32px] font-bold tracking-[-0.32px];
+  }
+
+  /* dashboard header */
+
+  .filter-options {
+    @apply w-[150px] bg-white  md:w-[192px]  rounded-md shadow-lg   absolute -right-20 flex transition-all  overflow-hidden flex-col gap-3 px-4 justify-center;
+  }
+
+  .filter-options li {
+    @apply flex items-center  font-bold text-[15px] tracking-[-0.25px] leading-[15px] text-color-03 gap-[13px] cursor-pointer;
+  }
+
+  /* invoice-card */
+  .invoice-card {
+    @apply border-2 border-transparent hover:border-color-01 cursor-pointer transition-all bg-white rounded-[8px] h-[134px] md:h-[72px] flex flex-col   justify-between px-6 py-5 shadow-md shadow-gray-100  md:items-center md:flex-row;
+  }
+  .status {
+    @apply w-[104px] h-[40px] rounded-md text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
+  }
+}
+.paid {
+  @apply bg-color-18 bg-opacity-[5.71%] text-color-18;
 }
 
-.invoice-form .payment-terms .options {
-  @apply h-[191px] rounded-[8px]  py-2 shadow-xl shadow-color-05 dark:shadow-color-12 absolute top-0 bg-white dark:bg-color-04 w-full;
+.pending {
+  @apply bg-color-19 text-color-19 bg-opacity-[5.71%];
 }
 
-.invoice-form .payment-terms .calendar {
-  @apply rounded-[8px]   shadow-xl shadow-color-05 dark:shadow-color-12 absolute top-0 bg-white dark:bg-color-04 w-full;
-}
-
-.invoice-form .payment-terms li {
-  @apply font-semibold text-[15px] leading-[15px] tracking-[-0.25px] text-color-08 dark:text-color-05 cursor-pointer hover:text-color-01 transition-colors py-3.5 px-6;
-}
-
-.invoice-form .item-list {
-  @apply text-color-17 text-lg leading-[32px] font-bold tracking-[-0.32px];
+.draft {
+  @apply bg-color-13 text-color-13 bg-opacity-[5.71%];
 }
 
 @layer utilities {
