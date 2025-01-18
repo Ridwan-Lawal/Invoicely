@@ -32,11 +32,20 @@ function DashboardHeader() {
   }
 
   useEffect(() => {
-    const filterValueInStorage = JSON.parse(localStorage.getItem("filter"));
+    const filterValueInStorage = JSON.parse(
+      localStorage.getItem("invoice-filter")
+    );
 
     const filterToStore = filterValueInStorage || filterValue;
-    localStorage.setItem("Invoice-filter", JSON.stringify(filterToStore));
+    localStorage.setItem("invoice-filter", JSON.stringify(filterToStore));
   }, [filterValue]);
+
+  useEffect(() => {
+    const filterFromStorage = JSON.parse(
+      localStorage.getItem("invoice-filter")
+    );
+    setFilterValue(filterFromStorage);
+  }, []);
 
   useEffect(() => {
     function closeFilterOptionsOnBlur(e) {
@@ -100,7 +109,7 @@ function DashboardHeader() {
                       <RiCheckboxBlankFill className="text-xl text-color-05 group-hover:border-2 border-color-01 transition-all rounded-[2px] " />
                     )}
                   </span>
-                  <span>{filter}</span>
+                  <span className="capitilize">{filter}</span>
                 </li>
               ))}
             </ul>

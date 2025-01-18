@@ -1,9 +1,11 @@
 import Dashboard from "@/app/_components/dashboard/Dashboard";
 
-function Page() {
+async function Page({ searchParams }) {
+  const query = await searchParams;
+  console.log(query);
   return (
     <div className="w-full pb-12">
-      <Dashboard />
+      <Dashboard filter={query?.filter} />
     </div>
   );
 }

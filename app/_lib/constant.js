@@ -1,1 +1,1 @@
-export const filterStatus = ["draft", "pending", "paid"];
+export const filterStatus = ["all", "draft", "pending", "paid"];

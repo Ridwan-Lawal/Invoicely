@@ -1,3 +1,4 @@
+import QueryProviders from "@/app/_lib/react-query/providers";
 import StoreProvider from "@/app/_lib/redux/StoreProvider";
 import { createClient } from "@/app/_lib/supabase/server";
 import { spartan } from "@/app/_styles/font";
@@ -19,8 +20,10 @@ export default async function RootLayout({ children }) {
       <body
         className={`${spartan.className} antialiased min-h-screen  no-scrollbar`}
       >
-        <StoreProvider>{children}</StoreProvider>
-        <Toaster />
+        <QueryProviders>
+          <StoreProvider>{children}</StoreProvider>
+          <Toaster />
+        </QueryProviders>
       </body>
     </html>
   );
