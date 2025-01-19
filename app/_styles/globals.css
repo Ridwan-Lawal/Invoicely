@@ -209,6 +209,14 @@
   .status {
     @apply w-[104px] h-[40px] rounded-md text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
   }
+
+  .invoice-details-header {
+    @apply border h-[91px] px-6 rounded-[8px] flex items-center justify-between bg-white shadow-md shadow-gray-100;
+  }
+
+  .invoice-details-header .buttons {
+    @apply flex  items-center gap-2 absolute md:static bottom-0 bg-white h-[91px] w-full md:h-fit md:w-fit right-0 justify-center md:justify-normal;
+  }
 }
 .paid {
   @apply bg-color-18 bg-opacity-[5.71%] text-color-18;
@@ -265,6 +273,10 @@
 
   .top-shadow-medium {
     box-shadow: 0 -40px 50px -20px rgba(0, 0, 0, 0.1);
+  }
+
+  .top-shadow-small {
+    box-shadow: 0 -20px 50px -0px rgba(0, 0, 0, 0.05);
   }
 }
 

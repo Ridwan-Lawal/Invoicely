@@ -11,7 +11,7 @@ export default function Layout({ children }) {
 
         <InvoiceForm />
       </div>
-      <main className=" overflow-auto border-2 border-red-500 mt-8 md:mt-10 lgl:mt-12  lgl:flex-grow lgl:max-w-[760px] md:max-w-[690px] max-w-[550px] px-6 mx-auto w-full">
+      <main className=" overflow-auto border-2 border-red-500 mt-8 md:mt-10 lgl:mt-12 min-h-[70vh]  lgl:flex-grow lgl:max-w-[760px] md:max-w-[690px] max-w-[550px] px-6 mx-auto w-full">
         {children}
       </main>
     </div>

@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { add, addSeconds, format } from "date-fns";
 import { CheckCircle, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -72,13 +72,6 @@ export function formatDate(date) {
   return format(date, "dd MMM yyyy");
 }
 
-export function formatCurrency(price) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-}
-
 export function generateInvoiceId() {
   const letters = Array.from(Array(26)).map((_, index) =>
     String.fromCharCode(65 + index)
@@ -100,3 +93,20 @@ export function generateInvoiceId() {
 
   return combinedId;
 }
+
+export function formatCurrency(price) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  }).format(price);
+}
+
+export function paymentDue(issueDate, paymentTerms) {
+  return (
+    issueDate &&
+    paymentTerms &&
+    format(add(new Date(issueDate), { days: +paymentTerms }), "dd MMM yyyy")
+  );
+}
+
+export function invoiceDate() {}

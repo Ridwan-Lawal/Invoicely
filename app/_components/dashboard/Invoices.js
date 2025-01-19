@@ -1,24 +1,25 @@
+"use client";
+
 import InvoiceCard from "@/app/_components/dashboard/InvoiceCard";
-import InvoicesList from "@/app/_components/dashboard/InvoicesList";
 import { getInvoices } from "@/app/_lib/data-service-client";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
-async function Invoices({ filter }) {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
+function Invoices({ filter }) {
+  const { data: invoices, error } = useQuery({
     queryKey: ["invoices", filter],
-    queryFn: () => getInvoices(),
+    queryFn: () => getInvoices(filter),
   });
 
+  console.log(invoices, error, filter);
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <InvoicesList filter={filter} />
-    </HydrationBoundary>
+    <div className="space-y-5">
+      {invoices?.map((invoice) => (
+        <Link href={`/${invoice?.id}`} key={invoice?.id}>
+          <InvoiceCard invoice={invoice} />
+        </Link>
+      ))}
+    </div>
   );
 }
 

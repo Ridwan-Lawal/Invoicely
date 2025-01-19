@@ -36,7 +36,7 @@ function DashboardHeader() {
       localStorage.getItem("invoice-filter")
     );
 
-    const filterToStore = filterValueInStorage || filterValue;
+    const filterToStore = filterValue || filterValueInStorage;
     localStorage.setItem("invoice-filter", JSON.stringify(filterToStore));
   }, [filterValue]);
 
