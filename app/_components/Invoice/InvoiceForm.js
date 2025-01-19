@@ -23,6 +23,7 @@ import { addInvoiceAction } from "@/app/_lib/actions";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const schema = z.object({
   user: z.object({
@@ -60,6 +61,8 @@ function InvoiceForm({ formType = "create" }) {
     passwordRef: issueDateRef,
     isPasswordInputOnFocus: isIssueDateInputOnFocus,
   } = usePasswordInputFocus();
+
+  const queryClient = useQueryClient();
 
   const { isInvoiceFormOpen } = useSelector((store) => store.dashboard);
   const dispatch = useDispatch();
@@ -116,8 +119,10 @@ function InvoiceForm({ formType = "create" }) {
 
     addInvoiceAction(modifiedData).then((res) => {
       if (res?.success) {
+        queryClient.invalidateQueries({ queryKey: ["invoices"] });
         customSuccessToast(res?.message);
         setIsSubmittingDraft(false);
+        dispatch(onToggleInvoiceForm());
       } else {
         customErrorToast(res?.message);
         setIsSubmittingDraft(false);
@@ -135,7 +140,9 @@ function InvoiceForm({ formType = "create" }) {
 
     addInvoiceAction(modifiedData).then((res) => {
       if (res?.success) {
+        queryClient.invalidateQueries({ queryKey: ["invoices"] });
         customSuccessToast(res?.message);
+        dispatch(onToggleInvoiceForm());
       } else {
         customErrorToast(res?.message);
       }
