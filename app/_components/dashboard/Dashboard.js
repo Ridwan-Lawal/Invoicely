@@ -19,7 +19,7 @@ async function Dashboard({ filter }) {
 
   return (
     <div className="space-y-8 md:space-y-11 w-full">
-      <DashboardHeader />
+      <DashboardHeader filter={filter} />
       <div className=" ">
         {/* <NoInvoice /> */}
 

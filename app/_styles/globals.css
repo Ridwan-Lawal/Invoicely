@@ -38,6 +38,9 @@
   p.variant-3 {
     @apply text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
   }
+  p.variant-4 {
+    @apply font-bold text-[15px] leading-[15px] text-color-07 tracking-[-0.25px];
+  }
   :root {
     --radius: 0.5rem;
   }
@@ -215,7 +218,7 @@
   }
 
   .invoice-details-header .buttons {
-    @apply flex  items-center gap-2 absolute md:static bottom-0 bg-white h-[91px] w-full md:h-fit md:w-fit right-0 justify-center md:justify-normal;
+    @apply flex  items-center gap-2 fixed md:static bottom-0 bg-white h-[91px] w-full md:h-fit md:w-fit right-0 justify-center md:justify-normal;
   }
 }
 .paid {

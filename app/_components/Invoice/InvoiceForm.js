@@ -123,6 +123,7 @@ function InvoiceForm({ formType = "create" }) {
         customSuccessToast(res?.message);
         setIsSubmittingDraft(false);
         dispatch(onToggleInvoiceForm());
+        reset();
       } else {
         customErrorToast(res?.message);
         setIsSubmittingDraft(false);
@@ -143,6 +144,7 @@ function InvoiceForm({ formType = "create" }) {
         queryClient.invalidateQueries({ queryKey: ["invoices"] });
         customSuccessToast(res?.message);
         dispatch(onToggleInvoiceForm());
+        reset;
       } else {
         customErrorToast(res?.message);
       }

@@ -278,3 +278,116 @@ export async function addInvoiceAction(invoice) {
     } successfully`,
   };
 }
+
+export async function markAsPaidAction(prevState, formData) {
+  const supabase = await createClient();
+
+  // 1. Check if the one calling this action is a logged in user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be signed in to call this action",
+    };
+  }
+
+  console.log(user?.id, "id");
+
+  // 3. Build the data and ensure the input are safe
+  const invoiceId = formData.get("invoiceId");
+  console.log(invoiceId, "ljfal");
+
+  // 2. check if the data the user is trying to mutate belongs to him
+  const { data: usersData } = await supabase
+    .from("invoice")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  const usersDataIds = usersData.map((data) => data?.id);
+
+  if (!usersDataIds?.includes(invoiceId)) {
+    return {
+      success: false,
+      message: "You are not allowed to mutate this data, it's not yours",
+    };
+  }
+
+  // 4. Mutation
+  const { error } = await supabase
+    .from("invoice")
+    .update({ status: "paid" })
+    .eq("user_id", user?.id)
+    .eq("id", invoiceId)
+    .select();
+
+  if (error) {
+    return {
+      success: false,
+      message: error?.message,
+    };
+  }
+
+  // 5 revalidate route
+  revalidatePath("/");
+
+  return {
+    success: true,
+    message: `Invoice #${invoiceId} successfully paid`,
+  };
+}
+
+export async function deleteInvoiceAction(prevState, formData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be logged in to call this action!",
+    };
+  }
+
+  const invoiceId = formData.get("invoiceId");
+
+  // 2. if data belongs to user
+  const { data: usersData } = await supabase
+    .from("invoice")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  const usersDataIds = usersData?.map((data) => data?.id);
+
+  if (!usersDataIds.includes(invoiceId)) {
+    return {
+      success: false,
+      message: "You are not allowed to delete this invoice, It's not yours",
+    };
+  }
+
+  //  mutation
+
+  const { error } = await supabase
+    .from("invoice")
+    .delete()
+    .eq("user_id", user?.id)
+    .eq("id", invoiceId);
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  revalidatePath("/");
+
+  return {
+    success: true,
+    message: `Invoice ${invoiceId}, successfully deleted `,
+  };
+}

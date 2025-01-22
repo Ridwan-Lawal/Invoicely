@@ -13,7 +13,7 @@ function Invoices({ filter }) {
 
   console.log(invoices, error, filter);
   return (
-    <div className="space-y-5">
+    <div className="flex flex-col gap-5">
       {invoices?.map((invoice) => (
         <Link href={`/${invoice?.id}`} key={invoice?.id}>
           <InvoiceCard invoice={invoice} />

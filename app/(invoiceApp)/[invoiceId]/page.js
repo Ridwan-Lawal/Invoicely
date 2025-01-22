@@ -15,7 +15,7 @@ async function Page({ params }) {
 
   return (
     <div>
-      <Suspense key={invoiceId} fallback={<Spinner />}>
+      <Suspense fallback={<Spinner />} key={invoiceId}>
         <Invoice invoiceId={invoiceId} />
       </Suspense>
     </div>

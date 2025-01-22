@@ -1,10 +1,12 @@
 import InvoiceDetails from "@/app/_components/Invoice Details/InvoiceDetails";
 import { getInvoice } from "@/app/_lib/data-service-client";
+import Spinner from "@/app/ui/Spinner";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 async function Invoice({ invoiceId }) {
   const queryClient = new QueryClient();
@@ -16,7 +18,9 @@ async function Invoice({ invoiceId }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <InvoiceDetails invoiceId={invoiceId} />
+      <Suspense fallback={<Spinner />} key={invoiceId}>
+        <InvoiceDetails invoiceId={invoiceId} />
+      </Suspense>
     </HydrationBoundary>
   );
 }

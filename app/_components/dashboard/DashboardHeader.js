@@ -10,16 +10,23 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getInvoices } from "@/app/_lib/data-service-client";
 
 // Build the filter functonality and start fetcing data usin react query
 
-function DashboardHeader() {
+function DashboardHeader({ filter }) {
   const [isFilterOptionsOpen, setIsFilterOptionsOpen] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+
+  const { data: invoices, error } = useQuery({
+    queryKey: ["invoices", filter],
+    queryFn: () => getInvoices(filter),
+  });
 
   const onToggleFilterOptions = () => setIsFilterOptionsOpen((cur) => !cur);
 
@@ -66,7 +73,7 @@ function DashboardHeader() {
         <h2 className="md:hidden">Invoices</h2>
         <h1 className="hidden md:block">Invoices</h1>
         <p className="variant-2">
-          <span className="hidden md:inline">There are</span> 7
+          <span className="hidden md:inline">There are</span> {invoices?.length}
           <span className="hidden md:inline"> total</span> invoices
         </p>
       </div>
