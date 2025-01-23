@@ -2,16 +2,24 @@
 
 import InvoiceCard from "@/app/_components/dashboard/InvoiceCard";
 import { getInvoices } from "@/app/_lib/data-service-client";
+import Spinner from "@/app/ui/Spinner";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 function Invoices({ filter }) {
-  const { data: invoices, error } = useQuery({
+  const {
+    data: invoices,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ["invoices", filter],
     queryFn: () => getInvoices(filter),
   });
 
   console.log(invoices, error, filter);
+
+  if (isLoading) return <Spinner />;
+
   return (
     <div className="flex flex-col gap-5">
       {invoices?.map((invoice) => (

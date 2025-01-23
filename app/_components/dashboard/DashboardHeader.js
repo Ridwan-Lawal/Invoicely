@@ -8,7 +8,7 @@ import { RiCheckboxBlankFill } from "react-icons/ri";
 import PlusIcon from "@/public/icon-plus.svg";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { clearForm, onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getInvoices } from "@/app/_lib/data-service-client";
@@ -126,7 +126,10 @@ function DashboardHeader({ filter }) {
         {/* new button */}
         <div className="">
           <button
-            onClick={() => dispatch(onToggleInvoiceForm())}
+            onClick={() => {
+              dispatch(onToggleInvoiceForm());
+              dispatch(clearForm());
+            }}
             className="btn btn-new-invoice "
           >
             <span className="plus-icon">

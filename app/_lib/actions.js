@@ -238,7 +238,7 @@ export async function signInAction(prevState, formData) {
 
 // Invoice
 
-export async function addInvoiceAction(invoice) {
+export async function addInvoiceAction(invoice, formType = "create") {
   const supabase = await createClient();
 
   // check if user exist
@@ -255,10 +255,18 @@ export async function addInvoiceAction(invoice) {
 
   // mutation
 
-  const { data, error } = await supabase
-    .from("invoice")
-    .insert([{ ...invoice, user_id: user?.id }])
-    .select();
+  let query = supabase.from("invoice");
+
+  if (formType === "create") {
+    query = query.insert([{ ...invoice, user_id: user?.id }]);
+  } else {
+    query = query
+      .update({ ...invoice, user_id: user?.id })
+      .eq("user_id", user?.id)
+      .eq("id", invoice?.id);
+  }
+
+  const { data, error } = await query.select();
 
   if (error) {
     return {
@@ -274,7 +282,11 @@ export async function addInvoiceAction(invoice) {
     success: true,
     message: `invoice 
     #${data?.[0]?.id} ${
-      data?.[0]?.status === "pending" ? "created" : "drafted"
+      data?.[0]?.status === "pending"
+        ? formType === "created"
+          ? "created"
+          : "updated"
+        : "drafted"
     } successfully`,
   };
 }

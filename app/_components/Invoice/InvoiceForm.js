@@ -13,7 +13,7 @@ import {
 } from "@/app/_lib/helpers";
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import DeleteIcon from "@/public/icon-delete.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,8 +22,9 @@ import { useGetSupabaseClientSession } from "@/app/_hooks/useGetSupabaseClientSe
 import { addInvoiceAction } from "@/app/_lib/actions";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { useQueryClient } from "@tanstack/react-query";
+import { clearForm } from "@/app/_lib/redux/formSlice";
 
 const schema = z.object({
   user: z.object({
@@ -54,7 +55,7 @@ const schema = z.object({
   ),
 });
 
-function InvoiceForm({ formType = "create" }) {
+function InvoiceForm() {
   const { passwordRef, isPasswordInputOnFocus } = usePasswordInputFocus();
 
   const {
@@ -64,7 +65,8 @@ function InvoiceForm({ formType = "create" }) {
 
   const queryClient = useQueryClient();
 
-  const { isInvoiceFormOpen } = useSelector((store) => store.dashboard);
+  const { isInvoiceFormOpen } = useSelector((store) => store.form);
+  const { formDataToEdit, formType } = useSelector((store) => store.form);
   const dispatch = useDispatch();
 
   const {
@@ -74,13 +76,27 @@ function InvoiceForm({ formType = "create" }) {
     control,
     getValues,
     submit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isLoading },
   } = useForm({
+    defaultValues: { user: formDataToEdit?.user },
     resolver: zodResolver(schema),
-    defaultValues: {
-      items: [{ name: "", quantity: "", price: "" }],
-    },
   });
+
+  console.log(
+    formDataToEdit
+      ? {
+          // user: formDataToEdit?.user,
+          // client: formDataToEdit?.client,
+          // invoice: formDataToEdit?.invoice,
+          items: formDataToEdit?.items,
+        }
+      : {
+          items: [{ name: "", quantity: "", price: "" }],
+        },
+    "yess"
+  );
+
+  console.log(formDataToEdit, "form");
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 
@@ -104,8 +120,6 @@ function InvoiceForm({ formType = "create" }) {
   const handlePaymentTerms = (terms) => {
     setPaymentTerms(terms);
   };
-
-  // abstract all this functions above and below by placing them in hooks
 
   function onSubmitDraft() {
     setIsSubmittingDraft(true);
@@ -134,17 +148,22 @@ function InvoiceForm({ formType = "create" }) {
   function onSubmit(data) {
     const modifiedData = {
       ...data,
-      id: generateInvoiceId(),
+      id: formType === "create" ? generateInvoiceId() : formDataToEdit?.id,
       status: "pending",
       invoice: { ...data?.invoice, paymentTerms, issueDate: `${issueDate}` },
     };
 
-    addInvoiceAction(modifiedData).then((res) => {
+    addInvoiceAction(modifiedData, formType).then((res) => {
       if (res?.success) {
-        queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        if (formType === "create") {
+          queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        } else {
+          queryClient.invalidateQueries({ queryKey: ["invoice"] });
+        }
         customSuccessToast(res?.message);
         dispatch(onToggleInvoiceForm());
-        reset;
+        reset();
+        if (formType === "edit") dispatch(clearForm());
       } else {
         customErrorToast(res?.message);
       }
@@ -154,11 +173,26 @@ function InvoiceForm({ formType = "create" }) {
   function onDiscard() {
     reset();
     dispatch(onToggleInvoiceForm());
+    if (formType === "edit") dispatch(clearForm());
   }
   //   ${
   //     isInvoiceFormOpen ? "w-full" : "w-0 overflow-hidden"
   //   }
   // bg-opacity-30 backdrop-blur-[2px] grid flex-1
+
+  useEffect(() => {
+    function handleFormOnBlur(e) {
+      console.log(e.target.closest(".invoice-form-container"));
+      if (e.target.className.includes("invoice-form-overlay")) {
+        dispatch(onToggleInvoiceForm());
+      }
+    }
+
+    document.addEventListener("click", handleFormOnBlur);
+
+    return () => document.removeEventListener("click", handleFormOnBlur);
+  }, [dispatch]);
+
   return (
     <div
       className={`invoice-form-overlay ${
@@ -604,11 +638,12 @@ function InvoiceForm({ formType = "create" }) {
                       Cancel
                     </button>{" "}
                     <button
-                      disabled={isSubmitting}
+                      disabled={isLoading}
+                      value="submit"
                       type="submit"
                       className="btn btn-paid"
                     >
-                      {isSubmitting ? "Updating invoice..." : "Save changes"}
+                      {isLoading ? "Updating invoice..." : "Save changes"}
                     </button>
                   </>
                 )}

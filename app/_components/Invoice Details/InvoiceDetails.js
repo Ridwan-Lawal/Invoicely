@@ -9,7 +9,9 @@ import {
   formatCurrency,
   paymentDue,
 } from "@/app/_lib/helpers";
-import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
+import { editForm } from "@/app/_lib/redux/formSlice";
+import Spinner from "@/app/ui/Spinner";
 import Status from "@/app/ui/Status";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -19,7 +21,7 @@ import { useDispatch } from "react-redux";
 
 function InvoiceDetails({ invoiceId }) {
   const router = useRouter();
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["invoice", invoiceId],
     queryFn: () => getInvoice(invoiceId),
   });
@@ -32,21 +34,28 @@ function InvoiceDetails({ invoiceId }) {
   const { formAction: deleteAction, isPending: isDeleting } =
     useInvoiceMutations(deleteInvoiceAction, "delete");
 
-  const { status, id, user, invoice, name, client, items } = data?.at(0) ?? {};
+  const invoiceData = data?.at(0);
 
   const invoiceIssueDate =
-    invoice?.issueDate && format(new Date(invoice?.issueDate), "dd MMM yyyy");
+    invoiceData?.invoice?.issueDate &&
+    format(new Date(invoiceData?.invoice?.issueDate), "dd MMM yyyy");
 
-  const paymentDueDate = paymentDue(invoice?.issueDate, invoice?.paymentTerms);
+  const paymentDueDate = paymentDue(
+    invoiceData?.invoice?.issueDate,
+    invoiceData?.invoice?.paymentTerms
+  );
 
-  const totalItemPrice = items?.reduce(
+  const totalItemPrice = invoiceData?.items?.reduce(
     (acc, cur) => acc + +cur?.quantity * +cur?.price,
     0
   );
 
   function handleEditInvoice() {
     dispatch(onToggleInvoiceForm());
+    dispatch(editForm(invoiceData));
   }
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="pb-20">
@@ -60,7 +69,7 @@ function InvoiceDetails({ invoiceId }) {
         {/* status */}
         <div className="flex items-center justify-between w-full md:justify-normal md:gap-5 ">
           <p className="variant-2">Status</p>
-          <Status status={status} />
+          <Status status={invoiceData?.status} />
         </div>
 
         {/* buttons */}
@@ -78,18 +87,19 @@ function InvoiceDetails({ invoiceId }) {
               {isDeleting ? "Deleting..." : "Delete"}
             </button>
           </form>
-          {status !== "paid" && status !== "draft" && (
-            <form action={paidFormAction}>
-              <input type="hidden" name="invoiceId" value={invoiceId} />
-              <button
-                disabled={isMarkingAsPaid}
-                style={{ opacity: isMarkingAsPaid && 0.8 }}
-                className="btn btn-paid"
-              >
-                {isMarkingAsPaid ? "Updating..." : "Mark as Paid"}
-              </button>{" "}
-            </form>
-          )}
+          {invoiceData?.status !== "paid" &&
+            invoiceData?.status !== "draft" && (
+              <form action={paidFormAction}>
+                <input type="hidden" name="invoiceId" value={invoiceId} />
+                <button
+                  disabled={isMarkingAsPaid}
+                  style={{ opacity: isMarkingAsPaid && 0.8 }}
+                  className="btn btn-paid"
+                >
+                  {isMarkingAsPaid ? "Updating..." : "Mark as Paid"}
+                </button>{" "}
+              </form>
+            )}
         </div>
       </div>
 
@@ -102,16 +112,17 @@ function InvoiceDetails({ invoiceId }) {
             <div className="space-y-1 md:space-y-[7px]">
               <p className="variant-3">
                 <span className="text-color-07">#</span>
-                {id}
+                {invoiceData?.id}
               </p>
               <p className="variant-2">Graphic Design</p>
             </div>
 
             {/* user address */}
             <p className="variant-2  flex flex-col gap-1">
-              <span>{user?.address}</span> <span>{user?.city}</span>{" "}
-              <span>{user?.postCode}</span>
-              <span>{user?.country}</span>
+              <span>{invoiceData?.user?.address}</span>{" "}
+              <span>{invoiceData?.user?.city}</span>{" "}
+              <span>{invoiceData?.user?.postCode}</span>
+              <span>{invoiceData?.user?.country}</span>
             </p>
           </div>
 
@@ -127,7 +138,7 @@ function InvoiceDetails({ invoiceId }) {
             {/* Bill to */}
             <div className="flex flex-col gap-[13px]">
               <p className="capitalize variant-2">bill to</p>
-              <p className="variant-3">{name}</p>
+              <p className="variant-3">{invoiceData?.name}</p>
             </div>
 
             {/* payment due */}
@@ -138,15 +149,16 @@ function InvoiceDetails({ invoiceId }) {
 
             {/* address */}
             <p className="variant-2  flex flex-col gap-1 order-5">
-              <span>{client?.address}</span> <span>{client?.city}</span>{" "}
-              <span>{client?.postCode}</span>
-              <span>{client?.country}</span>
+              <span>{invoiceData?.client?.address}</span>{" "}
+              <span>{invoiceData?.client?.city}</span>{" "}
+              <span>{invoiceData?.client?.postCode}</span>
+              <span>{invoiceData?.client?.country}</span>
             </p>
 
             {/* sent to  */}
             <div className="flex flex-col gap-[13px] md:order-3">
               <p className="capitalize variant-2">sent to</p>
-              <p className="variant-3">{client?.email}</p>
+              <p className="variant-3">{invoiceData?.client?.email}</p>
             </div>
           </div>
         </div>
@@ -165,7 +177,7 @@ function InvoiceDetails({ invoiceId }) {
                 </div>
               </div>
               {/* each item */}
-              {items?.map((item, id) => (
+              {invoiceData?.items?.map((item, id) => (
                 <div key={id} className="flex items-center justify-between">
                   <div className="flex flex-col gap-2 border border-red-500 md:w-[40%]">
                     <p className="variant-3">{item?.name}</p>
