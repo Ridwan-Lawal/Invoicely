@@ -58,7 +58,7 @@ function InvoiceDetails({ invoiceId }) {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="pb-20">
+    <div className="pb-36 md:pb-20">
       {/* back-button */}
       <button onClick={() => router.back()} className="btn btn-back">
         <ChevronLeft className="size-4 text-color-01" /> <span>Go back</span>
@@ -104,7 +104,7 @@ function InvoiceDetails({ invoiceId }) {
       </div>
 
       {/* main */}
-      <div className="shadow-md shadow-gray-100 bg-white py-8 px-7 rounded-[8px] mt-6 ">
+      <div className="shadow-md shadow-gray-100 bg-white dark:bg-color-03 dark:shadow-gray-900 py-8 px-7 rounded-[8px] mt-6 ">
         <div className=" space-y-8">
           {/*==== first section ====*/}
           <div className="flex flex-col gap-[30px] md:flex-row md:justify-between md:items-center">
@@ -165,7 +165,7 @@ function InvoiceDetails({ invoiceId }) {
 
         {/* price breakdown */}
         <div className="mt-12">
-          <div className="price-breakdown border bg-color-14 rounded-t-lg py-7 px-7">
+          <div className="price-breakdown border bg-color-14 dark:bg-color-04 rounded-t-lg py-7 px-7">
             {/* items */}
             <div className="flex flex-col gap-6">
               <div className=" items-center justify-between hidden md:flex">

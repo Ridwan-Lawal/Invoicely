@@ -13,10 +13,10 @@
     @apply bg-color-11 dark:bg-color-12;
   }
   h1 {
-    @apply font-bold text-4xl text-color-08 tracking-[-0.1px] leading-[33px];
+    @apply font-bold text-4xl text-color-08 tracking-[-0.1px] leading-[33px] dark:text-white;
   }
   h2 {
-    @apply font-bold text-2xl text-color-08  leading-[22px] tracking-[-0.75px];
+    @apply font-bold text-2xl text-color-08  leading-[22px] tracking-[-0.75px] dark:text-white;
   }
   h3 {
     @apply font-bold text-[15px] text-color-08 leading-[24px]  tracking-[-0.25px];
@@ -26,20 +26,20 @@
   }
 
   p {
-    @apply font-medium text-[13px] leading-[18px] text-color-08 tracking-[-0.25px];
+    @apply font-medium text-[13px] leading-[18px] text-color-08 tracking-[-0.25px] dark:text-white;
   }
   p.variant {
     @apply font-medium text-[13px] leading-[15px] text-color-08 tracking-[-0.25px];
   }
 
   p.variant-2 {
-    @apply font-medium text-[13px] leading-[15px] text-color-07 tracking-[-0.25px];
+    @apply font-medium text-[13px] leading-[15px] text-color-07 tracking-[-0.25px] dark:text-color-05;
   }
   p.variant-3 {
-    @apply text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
+    @apply text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px] dark:text-white;
   }
   p.variant-4 {
-    @apply font-bold text-[15px] leading-[15px] text-color-07 tracking-[-0.25px];
+    @apply font-bold text-[15px] leading-[15px] text-color-07 dark:text-color-05 tracking-[-0.25px];
   }
   :root {
     --radius: 0.5rem;
@@ -77,14 +77,14 @@
     @apply w-[84px] h-[48px] md:w-[96px] bg-color-14 text-color-07 dark:bg-color-04 dark:text-color-05 hover:bg-color-15;
   }
   .btn-add-newitem {
-    @apply w-[350px] h-[48px] bg-color-14 hover:bg-color-15 text-color-07;
+    @apply w-[350px] h-[48px] bg-color-14 hover:bg-color-15 text-color-07 dark:bg-color-04 dark:text-color-05;
   }
 
   .btn-auth {
     @apply w-full flex items-center justify-center gap-4;
   }
   .btn-back {
-    @apply flex gap-4 text-[15px] font-bold items-center leading-[15px] tracking-[-0.25px];
+    @apply flex gap-4 text-[15px] font-bold items-center leading-[15px] tracking-[-0.25px] dark:text-white;
   }
 
   /* Forms */
@@ -151,6 +151,14 @@
     @apply border-l lgl:border-l-0 lgl:border-t border-color-16 pl-6 md:pl-8 lgl:pt-4 lgl:pl-0  h-[72px] lgl:h-[65px]  lgl:w-[103px] flex items-center  justify-center;
   }
 
+  .settings {
+    @apply bg-white  w-[160px] h-[140px] absolute top-16 right-0 rounded-md dark:bg-color-04 px-4  shadow-md shadow-gray-200 dark:shadow-gray-900;
+  }
+
+  .settings ul li {
+    @apply text-sm flex items-center gap-3 text-color-16 dark:text-white  font-medium cursor-pointer  hover:text-color-01 dark:hover:text-color-01 transition-colors;
+  }
+
   /* Invoice form */
   .invoice-form-overlay {
     @apply bg-black bg-opacity-30 backdrop-blur-[2px] grid  border-2 border-purple-600;
@@ -164,11 +172,11 @@
   }
 
   .form-overflow {
-    @apply h-[69vh] lgl:h-[82vh] overflow-y-scroll  scrollbar-thin sm:px-14  px-6 pb-16;
+    @apply h-[82vh] lgl:h-[84vh] overflow-y-scroll  scrollbar-thin sm:px-14  px-6 pb-16;
   }
 
   .invoice-form .button-section {
-    @apply border border-purple-800 h-[13vh] lgl:h-[15vh] sm:px-8  px-6;
+    @apply border border-purple-800 h-[13vh] lgl:h-[16vh]  sm:px-8  px-6;
   }
 
   .invoice-form fieldset {
@@ -198,27 +206,27 @@
   /* dashboard header */
 
   .filter-options {
-    @apply w-[150px] bg-white  md:w-[192px]  rounded-md shadow-lg   absolute -right-20 flex transition-all  overflow-hidden flex-col gap-3 px-4 justify-center;
+    @apply w-[150px] bg-white dark:bg-color-04   md:w-[192px]  rounded-md shadow-lg   absolute -right-20 flex transition-all  overflow-hidden flex-col gap-3 px-4 justify-center;
   }
 
   .filter-options li {
-    @apply flex items-center  font-bold text-[15px] tracking-[-0.25px] leading-[15px] text-color-03 gap-[13px] cursor-pointer;
+    @apply flex items-center  font-bold text-[15px] tracking-[-0.25px] leading-[15px] text-color-03 dark:text-white gap-[13px] cursor-pointer;
   }
 
   /* invoice-card */
   .invoice-card {
-    @apply border-2 border-transparent hover:border-color-01 cursor-pointer transition-all bg-white rounded-[8px] h-[134px] md:h-[72px] flex flex-col   justify-between px-6 py-5 shadow-md shadow-gray-100  md:items-center md:flex-row;
+    @apply border-2 border-transparent hover:border-color-01 cursor-pointer transition-all bg-white dark:bg-color-03 rounded-[8px] h-[134px] md:h-[72px] flex flex-col   justify-between px-6 py-5 shadow-md shadow-gray-100 dark:shadow-gray-900  md:items-center md:flex-row;
   }
   .status {
     @apply w-[104px] h-[40px] rounded-md text-[15px] leading-[15px] font-bold text-color-08 tracking-[-0.25px];
   }
 
   .invoice-details-header {
-    @apply border h-[91px] px-6 rounded-[8px] flex items-center justify-between bg-white shadow-md shadow-gray-100;
+    @apply h-[91px] px-6 rounded-[8px] flex items-center justify-between bg-white dark:bg-color-03 shadow-md shadow-gray-100 dark:shadow-gray-900;
   }
 
   .invoice-details-header .buttons {
-    @apply flex  items-center gap-2 fixed md:static bottom-0 bg-white h-[91px] w-full md:h-fit md:w-fit right-0 justify-center md:justify-normal;
+    @apply flex  items-center gap-2 fixed md:static bottom-0 bg-white dark:bg-color-03 h-[91px] w-full md:h-fit md:w-fit right-0 justify-center md:justify-normal;
   }
 }
 .paid {
@@ -230,7 +238,7 @@
 }
 
 .draft {
-  @apply bg-color-13 text-color-13 bg-opacity-[5.71%];
+  @apply bg-color-13 text-color-13 bg-opacity-[5.71%] dark:text-color-05 dark:bg-color-13;
 }
 
 @layer utilities {
@@ -295,6 +303,12 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: #dfe3fa #ffffff;
+}
+
+*,
+html.dark {
+  scrollbar-width: thin;
+  scrollbar-color: #373b53 #141625;
 }
 
 input[type="number"]::-webkit-outer-spin-button,

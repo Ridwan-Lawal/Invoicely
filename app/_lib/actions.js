@@ -21,6 +21,20 @@ const UserName = z.object({
     .max(50, { message: "Name cannot exceed 50 characters" }),
 });
 
+const Avatar = z.object({
+  size: z.number().positive("Please insert a valid image :("),
+  type: z.string(),
+  name: z.string(),
+  lastModified: z.number(),
+});
+
+const NewPassword = z.object({
+  newPassword: z
+    .string()
+    .min(8, { message: "Password must be more than 8 characters long!" })
+    .max(50, { message: "Passwords cannot exceed 50 characters!" }),
+});
+
 export async function signupAction(prevState, formData) {
   const supabase = await createClient();
 
@@ -129,12 +143,12 @@ export async function addNameToSessionAction(prevState, formData) {
   const {
     data: {
       user: {
-        user_metadata: { display_name },
+        user_metadata: { full_name },
       },
     },
     error,
   } = await supabase.auth.updateUser({
-    data: { display_name: usernameValidation?.data?.name, avatar_url },
+    data: { full_name: usernameValidation?.data?.name, avatar_url },
   });
 
   if (error) {
@@ -148,7 +162,7 @@ export async function addNameToSessionAction(prevState, formData) {
 
   return {
     success: true,
-    message: `Welcome, ${display_name}`,
+    message: `Welcome, ${full_name}`,
   };
 }
 
@@ -401,5 +415,167 @@ export async function deleteInvoiceAction(prevState, formData) {
   return {
     success: true,
     message: `Invoice ${invoiceId}, successfully deleted `,
+  };
+}
+
+export async function updatePasswordAction(prevState, formData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be signed to call this action :(",
+    };
+  }
+
+  const userNewPassword = {
+    newPassword: formData.get("password"),
+  };
+
+  const {
+    data: validationData,
+    success: validationSuccess,
+    error: validationError,
+  } = NewPassword.safeParse(userNewPassword) ?? {};
+
+  if (!validationSuccess) {
+    return {
+      errors: validationError?.flatten()?.fieldErrors,
+      inputs: userNewPassword,
+    };
+  }
+
+  // update password
+
+  const { data, error } = await supabase.auth.updateUser({
+    password: validationData?.newPassword,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error?.message,
+    };
+  }
+
+  revalidatePath("/settings");
+
+  return {
+    success: true,
+    message: "Password successfully updated :)",
+  };
+}
+
+export async function updateDisplayNameAction(prevState, formData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be signed in to call this action",
+    };
+  }
+
+  const username = {
+    name: formData.get("name"),
+  };
+
+  const {
+    data: validationData,
+    success: validationSuccess,
+    error: validationError,
+  } = UserName.safeParse(username) ?? {};
+
+  if (!validationSuccess) {
+    return {
+      errors: validationError?.flatten()?.fieldErrors,
+      inputs: username,
+    };
+  }
+
+  // mutation
+  const { data, error } = await supabase.auth.updateUser({
+    full_name: validationData?.name,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error?.message,
+    };
+  }
+
+  revalidatePath("/settings");
+
+  return {
+    success: true,
+    message: "Display Name successfully updated :)",
+  };
+}
+
+export async function updateAvatarAction(prevState, formData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You are not allowed to call this action :(",
+    };
+  }
+
+  // validation
+  const avatar = formData.get("avatar");
+
+  const avatarValidation = Avatar.safeParse(avatar);
+
+  if (!avatarValidation.success) {
+    return {
+      errors: avatarValidation?.error?.flatten()?.fieldErrors,
+      inputs: avatar,
+    };
+  }
+
+  const filename = `${uuidv4()}-${avatarValidation.name}`;
+
+  const { data: avatarData, error: avatarError } = await supabase.storage
+    .from("avatar")
+    .upload(filename, avatar, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+
+  if (avatarError) throw new Error(avatarError?.message);
+
+  const {
+    data: { publicUrl: avatar_url },
+  } = supabase.storage.from("avatar").getPublicUrl(avatarData?.fullPath);
+
+  // Updating avatar
+  const { data, error } = await supabase.auth.updateUser({
+    avatar_url,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error?.message,
+    };
+  }
+
+  revalidatePath("/");
+
+  return {
+    success: true,
+    message: "User Avatar successfully updated :(",
   };
 }

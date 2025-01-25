@@ -1,31 +1,25 @@
 import { createClient } from "@/app/_lib/supabase/server";
+import { getPlaiceholder } from "plaiceholder";
 
-// export async function getInvoices(filter = "all") {
-//   const supabase = await createClient();
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
+export async function getProfile() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   if (!user) {
-//     throw new Error("You need to be signed in to get the your invoices :(");
-//   }
+  if (!user) throw new Error("You need to be signed in to get this data :(");
 
-//   let query = await supabase
-//     .from("invoice")
-//     .select("*")
-//     .eq("user_id", user?.id);
+  return user?.user_metadata;
+}
 
-//   if (filter === "all") {
-//     query = query;
-//   } else {
-//     query = query.eq("status", filter);
-//   }
-
-//   const { data: invoices, error } = query;
-
-//   if (error) {
-//     throw new Error(error.message);
-//   }
-
-//   return invoices;
-// }
+export async function getBase64(imageUrl) {
+  try {
+    const res = await fetch(imageUrl);
+    const buffer = await res.arrayBuffer();
+    const { base64 } = await getPlaiceholder(Buffer.from(buffer));
+    return base64;
+  } catch (error) {
+    console.error("Error generating base64:", error);
+    return null;
+  }
+}

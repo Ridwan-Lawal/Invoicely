@@ -111,9 +111,9 @@ function DashboardHeader({ filter }) {
                 >
                   <span>
                     {filter === filterValue ? (
-                      <MdCheckBox className=" text-xl text-color-01" />
+                      <MdCheckBox className=" text-xl text-color-01 " />
                     ) : (
-                      <RiCheckboxBlankFill className="text-xl text-color-05 group-hover:border-2 border-color-01 transition-all rounded-[2px] " />
+                      <RiCheckboxBlankFill className="text-xl text-color-05 group-hover:border-2 dark:text-color-03 border-color-01 transition-all rounded-[2px] " />
                     )}
                   </span>
                   <span className="capitilize">{filter}</span>

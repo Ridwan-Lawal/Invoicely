@@ -76,27 +76,13 @@ function InvoiceForm() {
     control,
     getValues,
     submit,
-    formState: { errors, isSubmitting, isLoading },
+    formState: { errors, isSubmitted, isLoading, isSubmitting },
   } = useForm({
-    defaultValues: { user: formDataToEdit?.user },
+    values: formDataToEdit
+      ? formDataToEdit
+      : { items: [{ name: "", price: "", quantity: "" }] },
     resolver: zodResolver(schema),
   });
-
-  console.log(
-    formDataToEdit
-      ? {
-          // user: formDataToEdit?.user,
-          // client: formDataToEdit?.client,
-          // invoice: formDataToEdit?.invoice,
-          items: formDataToEdit?.items,
-        }
-      : {
-          items: [{ name: "", quantity: "", price: "" }],
-        },
-    "yess"
-  );
-
-  console.log(formDataToEdit, "form");
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 
@@ -136,8 +122,8 @@ function InvoiceForm() {
         queryClient.invalidateQueries({ queryKey: ["invoices"] });
         customSuccessToast(res?.message);
         setIsSubmittingDraft(false);
-        dispatch(onToggleInvoiceForm());
         reset();
+        dispatch(onToggleInvoiceForm());
       } else {
         customErrorToast(res?.message);
         setIsSubmittingDraft(false);
@@ -146,6 +132,9 @@ function InvoiceForm() {
   }
 
   function onSubmit(data) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), 1000);
+    });
     const modifiedData = {
       ...data,
       id: formType === "create" ? generateInvoiceId() : formDataToEdit?.id,
@@ -161,8 +150,9 @@ function InvoiceForm() {
           queryClient.invalidateQueries({ queryKey: ["invoice"] });
         }
         customSuccessToast(res?.message);
-        dispatch(onToggleInvoiceForm());
         reset();
+        dispatch(onToggleInvoiceForm());
+
         if (formType === "edit") dispatch(clearForm());
       } else {
         customErrorToast(res?.message);
@@ -182,16 +172,22 @@ function InvoiceForm() {
 
   useEffect(() => {
     function handleFormOnBlur(e) {
-      console.log(e.target.closest(".invoice-form-container"));
-      if (e.target.className.includes("invoice-form-overlay")) {
+      if (e.target.classList.contains("invoice-form-overlay")) {
+        reset();
         dispatch(onToggleInvoiceForm());
+        dispatch(clearForm());
       }
     }
 
     document.addEventListener("click", handleFormOnBlur);
 
     return () => document.removeEventListener("click", handleFormOnBlur);
-  }, [dispatch]);
+  }, [dispatch, reset]);
+
+  useEffect(() => {
+    console.log(formType, "jjjjjjjjjjjj");
+    if (formType === "create") reset(undefined);
+  }, [formType, reset]);
 
   return (
     <div
@@ -199,7 +195,7 @@ function InvoiceForm() {
         isInvoiceFormOpen
           ? "w-full bg-opacity-30 flex-1"
           : "w-0  overflow-hidden bg-opacity-0 flex-0 pointer-events-none"
-      }    lgl:-ml-5 fixed transition-all ease-in-out inset-0 z-50 top-[73px]  md:top-[80px] lgl:top-0 lgl:left-[103px] lgl:z-40 duration-300`}
+      }    lgl:-ml-5 fixed transition-all ease-in-out inset-0 z-50  lgl:top-0 lgl:left-[103px] lgl:z-40 duration-300`}
     >
       <div
         className={` invoice-form-container ${
@@ -638,12 +634,12 @@ function InvoiceForm() {
                       Cancel
                     </button>{" "}
                     <button
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                       value="submit"
                       type="submit"
                       className="btn btn-paid"
                     >
-                      {isLoading ? "Updating invoice..." : "Save changes"}
+                      {isSubmitting ? "Updating..." : "Save changes"}
                     </button>
                   </>
                 )}
