@@ -4,7 +4,6 @@ import { Suspense } from "react";
 
 async function Page({ searchParams }) {
   const query = await searchParams;
-  console.log(query);
 
   const suspenseKey = `${query?.filter}`;
   return (

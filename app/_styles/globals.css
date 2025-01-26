@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply scrollbar-thin;
+  }
   html,
   body {
     margin: 0;
@@ -145,14 +148,14 @@
 
   /* Nav */
   .nav {
-    @apply bg-color-13 border h-[75px] md:h-[80px]  flex lgl:flex-col items-center justify-between pr-7 md:pr-8 lgl:pr-0 lgl:pb-4 lgl:w-[103px] lgl:h-screen  z-50;
+    @apply bg-color-13  h-[75px] md:h-[80px]  flex lgl:flex-col items-center justify-between pr-7 md:pr-8 lgl:pr-0 lgl:pb-4 lgl:w-[103px] lgl:h-screen  z-50;
   }
   .avatar {
     @apply border-l lgl:border-l-0 lgl:border-t border-color-16 pl-6 md:pl-8 lgl:pt-4 lgl:pl-0  h-[72px] lgl:h-[65px]  lgl:w-[103px] flex items-center  justify-center;
   }
 
   .settings {
-    @apply bg-white  w-[160px] h-[140px] absolute top-16 right-0 rounded-md dark:bg-color-04 px-4  shadow-md shadow-gray-200 dark:shadow-gray-900;
+    @apply bg-white  w-[160px] h-[140px] absolute top-16 lgl:left-28 lgl:-top-20 right-0 rounded-md dark:bg-color-04 px-4  shadow-md shadow-gray-200 dark:shadow-gray-900;
   }
 
   .settings ul li {
@@ -161,14 +164,14 @@
 
   /* Invoice form */
   .invoice-form-overlay {
-    @apply bg-black bg-opacity-30 backdrop-blur-[2px] grid  border-2 border-purple-600;
+    @apply bg-black bg-opacity-30 backdrop-blur-[2px] grid;
   }
 
   .invoice-form-container {
-    @apply bg-white  w-full border-2 border-green-600 dark:bg-color-12;
+    @apply bg-white  w-full  dark:bg-color-12;
   }
   .invoice-form-parent-element {
-    @apply border-2  border-purple-800 h-screen;
+    @apply h-screen;
   }
 
   .form-overflow {
@@ -176,7 +179,7 @@
   }
 
   .invoice-form .button-section {
-    @apply border border-purple-800 h-[13vh] lgl:h-[16vh]  sm:px-8  px-6;
+    @apply h-[13vh] lgl:h-[16vh]  sm:px-8  px-6;
   }
 
   .invoice-form fieldset {
@@ -206,7 +209,7 @@
   /* dashboard header */
 
   .filter-options {
-    @apply w-[150px] bg-white dark:bg-color-04   md:w-[192px]  rounded-md shadow-lg   absolute -right-20 flex transition-all  overflow-hidden flex-col gap-3 px-4 justify-center;
+    @apply w-[150px] bg-white dark:bg-color-04   md:w-[192px]  rounded-md shadow-lg   absolute -right-20 flex transition-all  overflow-hidden flex-col gap-3 px-4   justify-center;
   }
 
   .filter-options li {
@@ -300,7 +303,8 @@
   display: none;
 }
 
-* {
+/* *,
+html {
   scrollbar-width: thin;
   scrollbar-color: #dfe3fa #ffffff;
 }
@@ -309,7 +313,7 @@
 html.dark {
   scrollbar-width: thin;
   scrollbar-color: #373b53 #141625;
-}
+} */
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

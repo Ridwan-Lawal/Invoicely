@@ -124,7 +124,7 @@ export async function addNameToSessionAction(prevState, formData) {
 
   //   for the avatar
   const filename = `${uuidv4()}-${username?.avatar?.name}`;
-  console.log(filename);
+
   const { data: avatarData, error: avatarError } = await supabase.storage
     .from("avatar")
     .upload(filename, username?.avatar, {
@@ -136,7 +136,7 @@ export async function addNameToSessionAction(prevState, formData) {
 
   const {
     data: { publicUrl: avatar_url },
-  } = supabase.storage.from("avatar").getPublicUrl(avatarData?.fullPath);
+  } = supabase.storage.from("avatar").getPublicUrl(avatarData?.path);
 
   //   4. mutation (UPDATING NAME AND AVATAR)
 
@@ -158,7 +158,7 @@ export async function addNameToSessionAction(prevState, formData) {
     };
   }
 
-  revalidatePath("/user/welcome");
+  revalidatePath("/welcome");
 
   return {
     success: true,
@@ -242,11 +242,10 @@ export async function signInAction(prevState, formData) {
   }
 
   revalidatePath("/user");
-  console.log(data);
 
   return {
     success: true,
-    message: `Welcome back, ${data?.user?.user_metadata?.display_name}`,
+    message: `Welcome back, ${data?.user?.user_metadata?.full_name}`,
   };
 }
 
@@ -288,7 +287,6 @@ export async function addInvoiceAction(invoice, formType = "create") {
       message: error.message,
     };
   }
-  console.log(data, "data");
 
   revalidatePath("/");
 
@@ -320,11 +318,8 @@ export async function markAsPaidAction(prevState, formData) {
     };
   }
 
-  console.log(user?.id, "id");
-
   // 3. Build the data and ensure the input are safe
   const invoiceId = formData.get("invoiceId");
-  console.log(invoiceId, "ljfal");
 
   // 2. check if the data the user is trying to mutate belongs to him
   const { data: usersData } = await supabase
@@ -501,7 +496,9 @@ export async function updateDisplayNameAction(prevState, formData) {
 
   // mutation
   const { data, error } = await supabase.auth.updateUser({
-    full_name: validationData?.name,
+    data: {
+      full_name: validationData?.name,
+    },
   });
 
   if (error) {
@@ -511,7 +508,7 @@ export async function updateDisplayNameAction(prevState, formData) {
     };
   }
 
-  revalidatePath("/settings");
+  revalidatePath("/");
 
   return {
     success: true,
@@ -558,11 +555,13 @@ export async function updateAvatarAction(prevState, formData) {
 
   const {
     data: { publicUrl: avatar_url },
-  } = supabase.storage.from("avatar").getPublicUrl(avatarData?.fullPath);
+  } = supabase.storage.from("avatar").getPublicUrl(avatarData?.path);
 
   // Updating avatar
   const { data, error } = await supabase.auth.updateUser({
-    avatar_url,
+    data: {
+      avatar_url,
+    },
   });
 
   if (error) {
@@ -577,5 +576,35 @@ export async function updateAvatarAction(prevState, formData) {
   return {
     success: true,
     message: "User Avatar successfully updated :(",
+  };
+}
+
+export async function signOutAction() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "You need to be signed in to call this action",
+    };
+  }
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    return {
+      success: false,
+      message: error?.message,
+    };
+  }
+
+  revalidatePath("/");
+
+  return {
+    success: true,
+    message: "See you later, Chief :)",
   };
 }

@@ -132,9 +132,6 @@ function InvoiceForm() {
   }
 
   function onSubmit(data) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(), 1000);
-    });
     const modifiedData = {
       ...data,
       id: formType === "create" ? generateInvoiceId() : formDataToEdit?.id,
@@ -165,10 +162,6 @@ function InvoiceForm() {
     dispatch(onToggleInvoiceForm());
     if (formType === "edit") dispatch(clearForm());
   }
-  //   ${
-  //     isInvoiceFormOpen ? "w-full" : "w-0 overflow-hidden"
-  //   }
-  // bg-opacity-30 backdrop-blur-[2px] grid flex-1
 
   useEffect(() => {
     function handleFormOnBlur(e) {
@@ -185,7 +178,6 @@ function InvoiceForm() {
   }, [dispatch, reset]);
 
   useEffect(() => {
-    console.log(formType, "jjjjjjjjjjjj");
     if (formType === "create") reset(undefined);
   }, [formType, reset]);
 
@@ -587,7 +579,7 @@ function InvoiceForm() {
 
             {/* buttons */}
             <div
-              className={`button-section top-shadow-medium flex items-center gap-[7px] w-full  border ${
+              className={`button-section top-shadow-medium flex items-center gap-[7px] w-full   ${
                 formType === "create" ? "justify-between" : "justify-end"
               }`}
             >

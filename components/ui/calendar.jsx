@@ -23,14 +23,14 @@ function Calendar({
       classNames={{
         months:
           "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
-        month: "space-y-4 w-full",
+        month: "space-y-4 w-full dark:text-white",
         caption: "flex justify-center pt-1 relative items-center w-full h-10",
         caption_label:
           "text-sm font-medium font-bold text-[15px] leading-[15px] tracking-[-0.25] flex-grow text-center",
         nav: "space-x-1 flex items-center absolute left-1 right-1 justify-between",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 border-none bg-transparent p-0 opacity-100 text-[#7C5DFA] hover:opacity-100"
+          "h-7 w-7 border-none bg-transparent p-0 opacity-100 text-[#7C5DFA] hover:opacity-100 dark:bg-color-01 dark:text-white"
         ),
         nav_button_previous: "flex items-center justify-center",
         nav_button_next: "flex items-center justify-center",
@@ -47,14 +47,14 @@ function Calendar({
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-6 w-full p-0 font-bold text-[15px] leading-[15px] tracking-[-0.25] aria-selected:opacity-100 hover:text-[#7C5DFA] cursor-pointer"
+          "h-6 w-full p-0 font-bold text-[15px] leading-[15px] tracking-[-0.25] aria-selected:opacity-100 hover:text-[#7C5DFA] cursor-pointer dark:text-white dark:hover:bg-color-02"
         ),
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
         day_selected:
-          "bg-none text-[#7C5DFA] hover:bg-none dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900",
+          "bg-none text-[#7C5DFA] hover:bg-none dark:bg-color-01 dark:text-white dark:hover:bg-color-02 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900 ",
         day_today:
-          "bg-neutral-100 border-none text-color-09 dark:bg-neutral-800 dark:text-neutral-50",
+          "bg-neutral-100 border-none text-color-09 dark:bg-red-800 dark:text-neutral-50",
         day_outside:
           "day-outside text-neutral-500 aria-selected:bg-neutral-100/50 aria-selected:text-neutral-500 dark:text-neutral-400 dark:aria-selected:bg-neutral-800/50 dark:aria-selected:text-neutral-400",
         day_disabled: "text-neutral-500 opacity-50 dark:text-neutral-400",

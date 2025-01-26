@@ -11,10 +11,13 @@ const dashboardSlice = createSlice({
     onToggleTheme(state, action) {
       state.isThemeDark = !state.isThemeDark;
     },
+    onUpdateTheme(state, action) {
+      state.isThemeDark = action.payload;
+    },
   },
 });
 
-export const { onToggleTheme } = dashboardSlice.actions;
+export const { onToggleTheme, onUpdateTheme } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
 

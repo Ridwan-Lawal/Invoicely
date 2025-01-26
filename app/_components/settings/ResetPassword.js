@@ -1,7 +1,10 @@
 "use client";
 
+import { usePasswordInputFocus } from "@/app/_hooks/usePasswordInputFocus";
+import { usePasswordVisibility } from "@/app/_hooks/usePasswordVisibility";
 import { updatePasswordAction } from "@/app/_lib/actions";
 import { customErrorToast, customSuccessToast } from "@/app/_lib/helpers";
+import { Eye, EyeClosed } from "lucide-react";
 import { useActionState, useEffect } from "react";
 
 function ResetPassword({ user_email }) {
@@ -9,6 +12,11 @@ function ResetPassword({ user_email }) {
     updatePasswordAction,
     null
   );
+
+  const { errors, input } = state ?? {};
+  const { isPasswordInputOnFocus, passwordRef } = usePasswordInputFocus();
+  const { passwordShowRef, isShowPassword, handlePasswordVisibility } =
+    usePasswordVisibility();
 
   useEffect(() => {
     if (state === undefined || state === null) return;
@@ -39,21 +47,42 @@ function ResetPassword({ user_email }) {
         </div>
 
         <div className="field">
-          <div className="label_and_error">
-            <label htmlFor="password">New password</label>
-            {state?.errors?.newPassword?.at(0) && (
-              <p className="error-msg">{state?.errors?.newPassword?.at(0)}</p>
+          <div className="label_and_error ">
+            <label htmlFor="password">Password </label>
+
+            {errors?.password?.at(0) && (
+              <span className="error-msg">{errors?.password?.at(0)}</span>
             )}
           </div>
 
-          <input
-            type="password"
-            name="password"
-            id="password"
-            disabled={isPending}
-            defaultValue={state?.inputs?.newPassword}
-            autoComplete="password"
-          />
+          <div
+            ref={passwordRef}
+            className={`password ${
+              isPasswordInputOnFocus
+                ? "border border-color-02  dark:border-color-01 "
+                : errors?.password?.at(0)
+                ? "border-color-09"
+                : "border-color-05 dark:border-color-04"
+            }`}
+          >
+            <input
+              ref={passwordShowRef}
+              type={isShowPassword ? "text" : "password"}
+              name="password"
+              disabled={isPending}
+              defaultValue={input?.password}
+              autoComplete="password"
+              id="password"
+            />
+
+            <div onClick={handlePasswordVisibility}>
+              {isShowPassword ? (
+                <EyeClosed className="eye" />
+              ) : (
+                <Eye className="eye" />
+              )}
+            </div>
+          </div>
         </div>
 
         <button

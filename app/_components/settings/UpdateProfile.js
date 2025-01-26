@@ -86,7 +86,7 @@ function UpdateProfile() {
         <button
           disabled={isUpdatingAvatar}
           style={{ opacity: isUpdatingAvatar && 0.8 }}
-          className="btn btn-paid rounded-lg mt-4 py-3 px-3"
+          className="btn btn-paid rounded-lg mt-4 py-3 "
         >
           {isUpdatingAvatar ? "Updating..." : "Update Avatar"}
         </button>

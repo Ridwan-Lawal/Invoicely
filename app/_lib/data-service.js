@@ -1,5 +1,7 @@
 import { createClient } from "@/app/_lib/supabase/server";
+import { redirect } from "next/navigation";
 import { getPlaiceholder } from "plaiceholder";
+import sharp from "sharp";
 
 export async function getProfile() {
   const supabase = await createClient();
@@ -7,7 +9,7 @@ export async function getProfile() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("You need to be signed in to get this data :(");
+  if (!user) redirect("/user/signin");
 
   return user?.user_metadata;
 }
@@ -15,7 +17,10 @@ export async function getProfile() {
 export async function getBase64(imageUrl) {
   try {
     const res = await fetch(imageUrl);
-    const buffer = await res.arrayBuffer();
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = await sharp(Buffer.from(arrayBuffer))
+      .webp({ quality: 50 })
+      .toBuffer();
     const { base64 } = await getPlaiceholder(Buffer.from(buffer));
     return base64;
   } catch (error) {

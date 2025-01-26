@@ -6,7 +6,7 @@ export function usePasswordVisibility() {
 
   function handlePasswordVisibility() {
     const passwordField = passwordShowRef.current;
-    console.log(passwordField.type);
+
     if (passwordField.type === "password") {
       setIsShowPassword(true);
     } else {

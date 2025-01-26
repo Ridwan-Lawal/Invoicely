@@ -8,6 +8,18 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      scrollbar: {
+        DEFAULT: {
+          "track-color": "#ffffff",
+          "thumb-color": "#dfe3fa",
+          width: "12px",
+        },
+        dark: {
+          "track-color": "#141625",
+          "thumb-color": "#373b53",
+          width: "12px",
+        },
+      },
       screens: {
         lgl: "1150px",
       },

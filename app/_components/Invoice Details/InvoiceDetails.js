@@ -165,12 +165,12 @@ function InvoiceDetails({ invoiceId }) {
 
         {/* price breakdown */}
         <div className="mt-12">
-          <div className="price-breakdown border bg-color-14 dark:bg-color-04 rounded-t-lg py-7 px-7">
+          <div className="price-breakdown  bg-color-14 dark:bg-color-04 rounded-t-lg py-7 px-7">
             {/* items */}
             <div className="flex flex-col gap-6">
               <div className=" items-center justify-between hidden md:flex">
                 <p className="variant-2 w-[40%]">Item Name</p>
-                <div className="grid grid-cols-3 border md:w-[60%] justify-items-end">
+                <div className="grid grid-cols-3  md:w-[60%] justify-items-end">
                   <p className="variant-2 uppercase">qty.</p>
                   <p className="variant-2">Price</p>
                   <p className="variant-2">Total</p>
@@ -179,14 +179,14 @@ function InvoiceDetails({ invoiceId }) {
               {/* each item */}
               {invoiceData?.items?.map((item, id) => (
                 <div key={id} className="flex items-center justify-between">
-                  <div className="flex flex-col gap-2 border border-red-500 md:w-[40%]">
+                  <div className="flex flex-col gap-2  md:w-[40%]">
                     <p className="variant-3">{item?.name}</p>
                     <p className="variant-4 font-bold text-[15px] md:hidden">
                       {+item?.quantity} x {formatCurrency(+item?.price)}
                     </p>
                   </div>
 
-                  <div className="grid md:grid-cols-3 border border-green-700 md:w-[60%] md:justify-items-end">
+                  <div className="grid md:grid-cols-3  md:w-[60%] md:justify-items-end">
                     <p className="variant-4 md:block hidden  mr-2">
                       {item?.quantity}
                     </p>

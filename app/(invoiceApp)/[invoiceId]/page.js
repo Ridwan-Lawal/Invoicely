@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
 async function Page({ params }) {
   const { invoiceId } = await params;
 
-  console.log(invoiceId);
+  invoiceId;
 
   return (
     <div>

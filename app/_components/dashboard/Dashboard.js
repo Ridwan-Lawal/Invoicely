@@ -21,8 +21,6 @@ async function Dashboard({ filter }) {
     <div className="space-y-8 md:space-y-11 w-full">
       <DashboardHeader filter={filter} />
       <div className=" ">
-        {/* <NoInvoice /> */}
-
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Invoices filter={filter} />
         </HydrationBoundary>
