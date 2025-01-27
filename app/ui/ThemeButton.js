@@ -11,10 +11,7 @@ import {
 import Image from "next/image";
 import { useEffect } from "react";
 
-// build the skeleton loader
-// domain - sending of emails for auth
 // and push to production
-// partial prerendering from delba
 
 function ThemeButton() {
   const dispatch = useDispatch();

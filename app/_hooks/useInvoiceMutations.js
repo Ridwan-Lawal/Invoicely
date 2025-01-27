@@ -3,7 +3,11 @@ import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 
-export function useInvoiceMutations(mutationAction, mutationType) {
+export function useInvoiceMutations(
+  mutationAction,
+  mutationType,
+  onToggleDeleteModal
+) {
   const [state, formAction, isPending] = useActionState(mutationAction, null);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -18,6 +22,7 @@ export function useInvoiceMutations(mutationAction, mutationType) {
           queryKey: ["invoices"],
           refetchType: "all",
         });
+        onToggleDeleteModal();
 
         router.push("/");
       } else if (mutationType === "markAsPaid") {
@@ -28,7 +33,7 @@ export function useInvoiceMutations(mutationAction, mutationType) {
       }
     }
     if (state?.success === false) customErrorToast(state?.message);
-  }, [state, router, mutationType, queryClient]);
+  }, [state, router, mutationType, queryClient, onToggleDeleteModal]);
 
   return { formAction, isPending };
 }

@@ -28,3 +28,25 @@ export async function getBase64(imageUrl) {
     return null;
   }
 }
+
+export async function getInvoiced() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/user/signin");
+
+  const { data, error } = await supabase
+    .from("invoice")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  console.log(data, error);
+
+  return data;
+}

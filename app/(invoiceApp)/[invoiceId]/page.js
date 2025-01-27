@@ -1,5 +1,6 @@
 import Invoice from "@/app/_components/Invoice Details/Invoice";
-import InvoiceLoader from "@/app/ui/InvoiceLoader";
+import { createClient } from "@/app/_lib/supabase/client";
+
 import Spinner from "@/app/ui/Spinner";
 import { Suspense } from "react";
 
@@ -11,8 +12,6 @@ export async function generateMetadata({ params }) {
 
 async function Page({ params }) {
   const { invoiceId } = await params;
-
-  invoiceId;
 
   return (
     <div>

@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteModal from "@/app/_components/Invoice Details/DeleteModal";
 import { useInvoiceMutations } from "@/app/_hooks/useInvoiceMutations";
 import { deleteInvoiceAction, markAsPaidAction } from "@/app/_lib/actions";
 import { getInvoice } from "@/app/_lib/data-service-client";
@@ -18,22 +19,25 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 function InvoiceDetails({ invoiceId }) {
   const router = useRouter();
+
   const { data, isLoading } = useQuery({
     queryKey: ["invoice", invoiceId],
     queryFn: () => getInvoice(invoiceId),
   });
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleToggleDeleteModal = () => setIsDeleteModalOpen((cur) => !cur);
 
   // markPaid
   const { formAction: paidFormAction, isPending: isMarkingAsPaid } =
     useInvoiceMutations(markAsPaidAction, "markAsPaid");
-  const { formAction: deleteAction, isPending: isDeleting } =
-    useInvoiceMutations(deleteInvoiceAction, "delete");
 
   const invoiceData = data?.at(0);
 
@@ -78,16 +82,9 @@ function InvoiceDetails({ invoiceId }) {
           <button onClick={() => handleEditInvoice()} className="btn btn-edit">
             Edit
           </button>
-          <form action={deleteAction}>
-            <input type="hidden" name="invoiceId" value={invoiceId} />
-            <button
-              disabled={isDeleting}
-              style={{ opacity: isDeleting && 0.8 }}
-              className="btn btn-delete"
-            >
-              {isDeleting ? "Deleting..." : "Delete"}
-            </button>
-          </form>
+          <button onClick={handleToggleDeleteModal} className="btn btn-delete">
+            Delete
+          </button>
           {invoiceData?.status !== "paid" &&
             invoiceData?.status !== "draft" && (
               <form action={paidFormAction}>
@@ -212,6 +209,11 @@ function InvoiceDetails({ invoiceId }) {
           </div>
         </div>
       </div>
+      <DeleteModal
+        invoiceId={invoiceId}
+        isDeleteModalOpen={isDeleteModalOpen}
+        onToggleDeleteModal={handleToggleDeleteModal}
+      />
     </div>
   );
 }
