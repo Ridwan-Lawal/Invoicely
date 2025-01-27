@@ -1,4 +1,5 @@
 import Invoice from "@/app/_components/Invoice Details/Invoice";
+import InvoiceLoader from "@/app/ui/InvoiceLoader";
 import Spinner from "@/app/ui/Spinner";
 import { Suspense } from "react";
 

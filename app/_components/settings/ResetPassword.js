@@ -28,7 +28,7 @@ function ResetPassword({ user_email }) {
 
   return (
     <div>
-      <h3>Reset Password</h3>
+      <h3 className="dark:text-white">Reset Password</h3>
 
       <form action={formAction} className="max-w-[350px] space-y-5 mt-5">
         <div className="field">

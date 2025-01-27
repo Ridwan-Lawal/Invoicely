@@ -11,6 +11,7 @@ import {
 } from "@/app/_lib/helpers";
 import { onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { editForm } from "@/app/_lib/redux/formSlice";
+import InvoiceLoader from "@/app/ui/InvoiceLoader";
 import Spinner from "@/app/ui/Spinner";
 import Status from "@/app/ui/Status";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -55,7 +56,7 @@ function InvoiceDetails({ invoiceId }) {
     dispatch(editForm(invoiceData));
   }
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <InvoiceLoader />;
 
   return (
     <div className="pb-36 md:pb-20">

@@ -25,7 +25,7 @@ function UpdateProfile() {
 
   return (
     <div className="space-y-5">
-      <h3>Update Profile</h3>
+      <h3 className="dark:text-white">Update Profile</h3>
       <form action={displayNameFormAction} className="max-w-[350px]">
         <div className="field">
           <div className="label_and_error">

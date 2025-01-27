@@ -8,9 +8,6 @@ export const metadata = {
   title: "Settings",
 };
 
-// sign out functionality
-// retest the settings features
-
 async function Page() {
   const user_profile = await getProfile();
 
@@ -21,11 +18,11 @@ async function Page() {
           <ChevronLeft className="size-4 text-color-01" /> <span>Go home</span>
         </button>
       </Link>
-      <div className="bg-white py-4 px-6 shadow-md shadow-gray-200 rounded-md">
+      <div className="bg-white py-4 px-6 shadow-md shadow-gray-200 rounded-md dark:bg-color-03 dark:shadow-gray-900">
         <ResetPassword user_email={user_profile?.email} />
       </div>
 
-      <div className="bg-white py-5 px-6 shadow-md shadow-gray-200 rounded-md">
+      <div className="bg-white py-5 px-6 shadow-md shadow-gray-200 rounded-md dark:bg-color-03 dark:shadow-gray-900">
         <UpdateProfile />
       </div>
     </div>

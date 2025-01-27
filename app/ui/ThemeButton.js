@@ -12,9 +12,9 @@ import Image from "next/image";
 import { useEffect } from "react";
 
 // build the skeleton loader
-// domain
+// domain - sending of emails for auth
 // and push to production
-// fixed the theme
+// partial prerendering from delba
 
 function ThemeButton() {
   const dispatch = useDispatch();
@@ -29,14 +29,14 @@ function ThemeButton() {
   }, [isThemeDark]);
 
   useEffect(() => {
-    localStorage.setItem("isThemeDark", JSON.stringify(isThemeDark));
-  }, [isThemeDark]);
-
-  useEffect(() => {
     const themeInLocalStorage = JSON.parse(localStorage.getItem("isThemeDark"));
 
-    dispatch(onUpdateTheme(themeInLocalStorage));
+    if (themeInLocalStorage) dispatch(onUpdateTheme(themeInLocalStorage));
   }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("isThemeDark", JSON.stringify(isThemeDark));
+  }, [isThemeDark, dispatch]);
 
   return (
     <button onClick={() => dispatch(onToggleTheme())}>

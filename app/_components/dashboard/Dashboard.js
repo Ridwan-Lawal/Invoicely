@@ -8,6 +8,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import DashboardLoader from "@/app/ui/DashboardLoader";
 
 async function Dashboard({ filter }) {
   const queryClient = new QueryClient();
