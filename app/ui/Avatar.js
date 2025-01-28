@@ -26,6 +26,19 @@ function Avatar({ user_profile, blurDataUrl }) {
     if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
 
+  //   if we click on any other place on the screen apart from the settings, the menu should close
+  useEffect(() => {
+    function handleOnBlurSettings(e) {
+      if (!e.target.closest(".avatar")) {
+        setIsSettingOpen(false);
+      }
+    }
+
+    document.addEventListener("click", handleOnBlurSettings);
+
+    return () => document.removeEventListener("click", handleOnBlurSettings);
+  }, []);
+
   return (
     <div className="avatar flex flex-col relative">
       <div onClick={toggleSetting} className="flex items-center gap-3">

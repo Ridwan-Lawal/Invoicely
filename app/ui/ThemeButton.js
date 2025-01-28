@@ -11,6 +11,8 @@ import {
 import Image from "next/image";
 import { useEffect } from "react";
 
+// sentry
+// buy domain, and supabase email for auth verification
 // and push to production
 
 function ThemeButton() {
