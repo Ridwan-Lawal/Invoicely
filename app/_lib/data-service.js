@@ -1,31 +1,52 @@
 import { createClient } from "@/app/_lib/supabase/server";
+import { redirect } from "next/navigation";
+import { getPlaiceholder } from "plaiceholder";
+import sharp from "sharp";
 
-// export async function getInvoices(filter = "all") {
-//   const supabase = await createClient();
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
+export async function getProfile() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   if (!user) {
-//     throw new Error("You need to be signed in to get the your invoices :(");
-//   }
+  if (!user) redirect("/user/signin");
 
-//   let query = await supabase
-//     .from("invoice")
-//     .select("*")
-//     .eq("user_id", user?.id);
+  return user?.user_metadata;
+}
 
-//   if (filter === "all") {
-//     query = query;
-//   } else {
-//     query = query.eq("status", filter);
-//   }
+export async function getBase64(imageUrl) {
+  try {
+    const res = await fetch(imageUrl);
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = await sharp(Buffer.from(arrayBuffer))
+      .webp({ quality: 50 })
+      .toBuffer();
+    const { base64 } = await getPlaiceholder(Buffer.from(buffer));
+    return base64;
+  } catch (error) {
+    console.error("Error generating base64:", error);
+    return null;
+  }
+}
 
-//   const { data: invoices, error } = query;
+export async function getInvoiced() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   if (error) {
-//     throw new Error(error.message);
-//   }
+  if (!user) redirect("/user/signin");
 
-//   return invoices;
-// }
+  const { data, error } = await supabase
+    .from("invoice")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  console.log(data, error);
+
+  return data;
+}

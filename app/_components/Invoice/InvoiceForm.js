@@ -13,7 +13,7 @@ import {
 } from "@/app/_lib/helpers";
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import DeleteIcon from "@/public/icon-delete.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,8 +22,9 @@ import { useGetSupabaseClientSession } from "@/app/_hooks/useGetSupabaseClientSe
 import { addInvoiceAction } from "@/app/_lib/actions";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { useQueryClient } from "@tanstack/react-query";
+import { clearForm } from "@/app/_lib/redux/formSlice";
 
 const schema = z.object({
   user: z.object({
@@ -54,7 +55,7 @@ const schema = z.object({
   ),
 });
 
-function InvoiceForm({ formType = "create" }) {
+function InvoiceForm() {
   const { passwordRef, isPasswordInputOnFocus } = usePasswordInputFocus();
 
   const {
@@ -64,7 +65,8 @@ function InvoiceForm({ formType = "create" }) {
 
   const queryClient = useQueryClient();
 
-  const { isInvoiceFormOpen } = useSelector((store) => store.dashboard);
+  const { isInvoiceFormOpen } = useSelector((store) => store.form);
+  const { formDataToEdit, formType } = useSelector((store) => store.form);
   const dispatch = useDispatch();
 
   const {
@@ -74,12 +76,12 @@ function InvoiceForm({ formType = "create" }) {
     control,
     getValues,
     submit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitted, isLoading, isSubmitting },
   } = useForm({
+    values: formDataToEdit
+      ? formDataToEdit
+      : { items: [{ name: "", price: "", quantity: "" }] },
     resolver: zodResolver(schema),
-    defaultValues: {
-      items: [{ name: "", quantity: "", price: "" }],
-    },
   });
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
@@ -105,8 +107,6 @@ function InvoiceForm({ formType = "create" }) {
     setPaymentTerms(terms);
   };
 
-  // abstract all this functions above and below by placing them in hooks
-
   function onSubmitDraft() {
     setIsSubmittingDraft(true);
     const data = getValues();
@@ -122,6 +122,7 @@ function InvoiceForm({ formType = "create" }) {
         queryClient.invalidateQueries({ queryKey: ["invoices"] });
         customSuccessToast(res?.message);
         setIsSubmittingDraft(false);
+        reset();
         dispatch(onToggleInvoiceForm());
       } else {
         customErrorToast(res?.message);
@@ -133,16 +134,23 @@ function InvoiceForm({ formType = "create" }) {
   function onSubmit(data) {
     const modifiedData = {
       ...data,
-      id: generateInvoiceId(),
+      id: formType === "create" ? generateInvoiceId() : formDataToEdit?.id,
       status: "pending",
       invoice: { ...data?.invoice, paymentTerms, issueDate: `${issueDate}` },
     };
 
-    addInvoiceAction(modifiedData).then((res) => {
+    addInvoiceAction(modifiedData, formType).then((res) => {
       if (res?.success) {
-        queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        if (formType === "create") {
+          queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        } else {
+          queryClient.invalidateQueries({ queryKey: ["invoice"] });
+        }
         customSuccessToast(res?.message);
+        reset();
         dispatch(onToggleInvoiceForm());
+
+        if (formType === "edit") dispatch(clearForm());
       } else {
         customErrorToast(res?.message);
       }
@@ -152,18 +160,34 @@ function InvoiceForm({ formType = "create" }) {
   function onDiscard() {
     reset();
     dispatch(onToggleInvoiceForm());
+    if (formType === "edit") dispatch(clearForm());
   }
-  //   ${
-  //     isInvoiceFormOpen ? "w-full" : "w-0 overflow-hidden"
-  //   }
-  // bg-opacity-30 backdrop-blur-[2px] grid flex-1
+
+  useEffect(() => {
+    function handleFormOnBlur(e) {
+      if (e.target.classList.contains("invoice-form-overlay")) {
+        reset();
+        dispatch(onToggleInvoiceForm());
+        dispatch(clearForm());
+      }
+    }
+
+    document.addEventListener("click", handleFormOnBlur);
+
+    return () => document.removeEventListener("click", handleFormOnBlur);
+  }, [dispatch, reset]);
+
+  useEffect(() => {
+    if (formType === "create") reset(undefined);
+  }, [formType, reset]);
+
   return (
     <div
       className={`invoice-form-overlay ${
         isInvoiceFormOpen
           ? "w-full bg-opacity-30 flex-1"
           : "w-0  overflow-hidden bg-opacity-0 flex-0 pointer-events-none"
-      }    lgl:-ml-5 fixed transition-all ease-in-out inset-0 z-50 top-[73px]  md:top-[80px] lgl:top-0 lgl:left-[103px] lgl:z-40 duration-300`}
+      }    lgl:-ml-5 fixed transition-all ease-in-out inset-0 z-50  lgl:top-0 lgl:left-[103px] lgl:z-40 duration-300`}
     >
       <div
         className={` invoice-form-container ${
@@ -555,7 +579,7 @@ function InvoiceForm({ formType = "create" }) {
 
             {/* buttons */}
             <div
-              className={`button-section top-shadow-medium flex items-center gap-[7px] w-full  border ${
+              className={`button-section top-shadow-medium flex items-center gap-[7px] w-full   ${
                 formType === "create" ? "justify-between" : "justify-end"
               }`}
             >
@@ -603,10 +627,11 @@ function InvoiceForm({ formType = "create" }) {
                     </button>{" "}
                     <button
                       disabled={isSubmitting}
+                      value="submit"
                       type="submit"
                       className="btn btn-paid"
                     >
-                      {isSubmitting ? "Updating invoice..." : "Save changes"}
+                      {isSubmitting ? "Updating..." : "Save changes"}
                     </button>
                   </>
                 )}

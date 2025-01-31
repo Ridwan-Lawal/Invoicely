@@ -8,18 +8,23 @@ import { RiCheckboxBlankFill } from "react-icons/ri";
 import PlusIcon from "@/public/icon-plus.svg";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { onToggleInvoiceForm } from "@/app/_lib/redux/dashboardSlice";
+import { clearForm, onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getInvoices } from "@/app/_lib/data-service-client";
 
-// Build the filter functonality and start fetcing data usin react query
-
-function DashboardHeader() {
+function DashboardHeader({ filter }) {
   const [isFilterOptionsOpen, setIsFilterOptionsOpen] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+
+  const { data: invoices, error } = useQuery({
+    queryKey: ["invoices", filter],
+    queryFn: () => getInvoices(filter),
+  });
 
   const onToggleFilterOptions = () => setIsFilterOptionsOpen((cur) => !cur);
 
@@ -66,7 +71,8 @@ function DashboardHeader() {
         <h2 className="md:hidden">Invoices</h2>
         <h1 className="hidden md:block">Invoices</h1>
         <p className="variant-2">
-          <span className="hidden md:inline">There are</span> 7
+          <span className="hidden md:inline">There are</span>{" "}
+          {invoices?.length ? invoices?.length : "X"}
           <span className="hidden md:inline"> total</span> invoices
         </p>
       </div>
@@ -74,10 +80,10 @@ function DashboardHeader() {
       {/* filter and new button */}
       <div className="flex  items-center gap-6 md:gap-8 ">
         {/* filter */}
-        <div className="flex filter flex-col items-center  border justify-center">
+        <div className="flex filter flex-col items-center   justify-center">
           <div
             onClick={onToggleFilterOptions}
-            className="flex items-center gap-3 w-full border justify-center cursor-pointer"
+            className="flex items-center gap-3 w-full  justify-center cursor-pointer"
           >
             <p className="text-[15px] font-bold leading-[15px] cursor-pointer ">
               Filter <span className="hidden md:inline">by status</span>
@@ -93,20 +99,20 @@ function DashboardHeader() {
           <div className="relative">
             <ul
               className={`filter-options ${
-                isFilterOptionsOpen ? "h-[128px] mt-4" : "h-0"
+                isFilterOptionsOpen ? "h-[148px] mt-4" : "h-0"
               } `}
             >
               {filterStatus?.map((filter) => (
                 <li
                   key={filter}
-                  className="group "
+                  className="group capitalize"
                   onClick={() => addFilterToUrl(filter)}
                 >
                   <span>
                     {filter === filterValue ? (
-                      <MdCheckBox className=" text-xl text-color-01" />
+                      <MdCheckBox className=" text-xl text-color-01 " />
                     ) : (
-                      <RiCheckboxBlankFill className="text-xl text-color-05 group-hover:border-2 border-color-01 transition-all rounded-[2px] " />
+                      <RiCheckboxBlankFill className="text-xl text-color-05 group-hover:border-2 dark:text-color-03 border-color-01 transition-all rounded-[2px] " />
                     )}
                   </span>
                   <span className="capitilize">{filter}</span>
@@ -119,7 +125,10 @@ function DashboardHeader() {
         {/* new button */}
         <div className="">
           <button
-            onClick={() => dispatch(onToggleInvoiceForm())}
+            onClick={() => {
+              dispatch(onToggleInvoiceForm());
+              dispatch(clearForm());
+            }}
             className="btn btn-new-invoice "
           >
             <span className="plus-icon">

@@ -8,6 +8,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import DashboardLoader from "@/app/ui/DashboardLoader";
 
 async function Dashboard({ filter }) {
   const queryClient = new QueryClient();
@@ -19,10 +20,8 @@ async function Dashboard({ filter }) {
 
   return (
     <div className="space-y-8 md:space-y-11 w-full">
-      <DashboardHeader />
+      <DashboardHeader filter={filter} />
       <div className=" ">
-        {/* <NoInvoice /> */}
-
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Invoices filter={filter} />
         </HydrationBoundary>

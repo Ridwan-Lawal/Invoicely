@@ -1,19 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isInvoiceFormOpen: false,
+  isThemeDark: false,
 };
 
 const dashboardSlice = createSlice({
   name: "dashboard",
   initialState,
   reducers: {
-    onToggleInvoiceForm(state) {
-      state.isInvoiceFormOpen = !state.isInvoiceFormOpen;
+    onToggleTheme(state, action) {
+      state.isThemeDark = !state.isThemeDark;
+    },
+    onUpdateTheme(state, action) {
+      state.isThemeDark = action.payload;
     },
   },
 });
 
-export const { onToggleInvoiceForm } = dashboardSlice.actions;
+export const { onToggleTheme, onUpdateTheme } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
+
+export const getTheme = (store) => store.dashboard;

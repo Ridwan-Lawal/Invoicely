@@ -25,15 +25,13 @@ function SigninForm() {
   const { passwordShowRef, isShowPassword, handlePasswordVisibility } =
     usePasswordVisibility();
 
-  console.log(state);
-
   useEffect(() => {
     if (state === undefined || state === null) return;
     else if (state?.success) {
       customSuccessToast(state?.message);
       router.push("/");
     } else if (state?.success === false) customErrorToast(state?.message);
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
@@ -161,7 +159,7 @@ function SigninForm() {
           </div>
 
           <p className="text-[15px] text-center mt-4">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <span
               className="text-color-02 underline ml-2 cursor-pointer"
               onClick={() => router.push("/user/signup")}

@@ -13,7 +13,7 @@ function InvoiceCard({ invoice }) {
     client: { name },
   } = invoice ?? {};
 
-  const totalItemPrice = items.reduce(
+  const totalItemPrice = items?.reduce(
     (acc, cur) => acc + +cur?.price * +cur?.quantity,
     0
   );

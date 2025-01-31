@@ -1,4 +1,5 @@
 import { createClient } from "@/app/_lib/supabase/client";
+import { redirect } from "next/dist/server/api-utils";
 
 export async function getInvoices(filter = "all") {
   const supabase = createClient();
@@ -6,9 +7,7 @@ export async function getInvoices(filter = "all") {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You need to be signed in to get the your invoices :(");
-  }
+  if (!user) redirect("/user/signin");
 
   let query = supabase.from("invoice").select("*").eq("user_id", user?.id);
 
@@ -23,7 +22,7 @@ export async function getInvoices(filter = "all") {
   if (error) {
     throw new Error(error.message);
   }
-  console.log(invoices, "invoices", filter);
+
   return invoices;
 }
 
@@ -34,9 +33,7 @@ export async function getInvoice(invoiceId) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You need to be signed in to get this data :(");
-  }
+  if (!user) redirect("/user/signin");
 
   const { data: invoice, error } = await supabase
     .from("invoice")

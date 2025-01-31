@@ -28,12 +28,12 @@ function SignupForm() {
   useEffect(() => {
     if (state === undefined || state === null) return;
     if (state?.success) {
-      customSuccessToast(state?.message);
       router.push("/welcome");
+      customSuccessToast(state?.message);
     } else if (state?.success === false) {
       customErrorToast(state?.message);
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
