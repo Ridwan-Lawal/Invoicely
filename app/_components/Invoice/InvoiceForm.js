@@ -145,6 +145,8 @@ function InvoiceForm() {
           queryClient.invalidateQueries({ queryKey: ["invoices"] });
         } else {
           queryClient.invalidateQueries({ queryKey: ["invoice"] });
+          queryClient.invalidateQueries({ queryKey: ["invoices"] });
+          reset();
         }
         customSuccessToast(res?.message);
         reset();
