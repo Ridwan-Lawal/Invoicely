@@ -6,7 +6,7 @@ export const metadata = {
 
 function Page() {
   return (
-    <div>
+    <div className='px-6'>
       <SigninForm />
     </div>
   );

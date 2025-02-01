@@ -6,7 +6,7 @@ export const metadata = {
 
 function Page() {
   return (
-    <div>
+    <div className='px-6'>
       <SignupForm />
     </div>
   );
@@ -14,4 +14,3 @@ function Page() {
 
 export default Page;
 
-// start the authentication for the sign up
