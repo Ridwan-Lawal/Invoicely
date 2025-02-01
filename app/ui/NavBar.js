@@ -8,10 +8,12 @@ import Link from "next/link";
 
 async function NavBar() {
   const user_profile = await getProfile();
-  console.log(user_profile?.avatar_url.includes('undefined'), 'Rates');
+  console.log(user_profile?.avatar_url.includes('undefined'), user_profile);
   const isThereDP =  !user_profile?.avatar_url.includes('undefined');
   const blurDataUrl =
  isThereDP && (await getBase64(user_profile?.avatar_url));
+
+ console.log(isThereDP, "Yessssssss")
 
   return (
     <nav className="nav lgl:rounded-r-3xl lgl:w-[103px]">

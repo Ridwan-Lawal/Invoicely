@@ -75,6 +75,7 @@ function InvoiceForm() {
     reset,
     control,
     getValues,
+    watch,
     submit,
     formState: { errors, isSubmitted, isLoading, isSubmitting },
   } = useForm({
@@ -83,6 +84,8 @@ function InvoiceForm() {
       : { items: [{ name: "", price: "", quantity: "" }] },
     resolver: zodResolver(schema),
   });
+
+  console.log(watch())
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 

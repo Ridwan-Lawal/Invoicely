@@ -238,6 +238,7 @@ export async function signInAction(prevState, formData) {
     return {
       success: false,
       message: error.message,
+      inputs:userCredentials
     };
   }
 
@@ -246,6 +247,7 @@ export async function signInAction(prevState, formData) {
   return {
     success: true,
     message: `Welcome back, ${data?.user?.user_metadata?.full_name}`,
+    
   };
 }
 
@@ -542,7 +544,7 @@ export async function updateAvatarAction(prevState, formData) {
     };
   }
 
-  const filename = `${uuidv4()}-${avatarValidation.name}`;
+  const filename = `${uuidv4()}-${avatarValidation?.data?.name}`;
 
   const { data: avatarData, error: avatarError } = await supabase.storage
     .from("avatar")
@@ -564,6 +566,8 @@ export async function updateAvatarAction(prevState, formData) {
     },
   });
 
+  console.log(avatar_url, data, filename, avatar)
+
   if (error) {
     return {
       success: false,
@@ -572,6 +576,7 @@ export async function updateAvatarAction(prevState, formData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/settings");
 
   return {
     success: true,

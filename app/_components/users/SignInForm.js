@@ -33,6 +33,9 @@ function SigninForm() {
     } else if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
 
+  console.log(inputs, state)
+  
+
   return (
     <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
       <div className="flex flex-col  h-screen gap-8 justify-center w-full">

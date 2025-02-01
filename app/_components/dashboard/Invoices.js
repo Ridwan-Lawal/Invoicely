@@ -19,6 +19,7 @@ function Invoices({ filter }) {
     queryFn: () => getInvoices(filter),
   });
 
+ 
   if (isLoading) return <InvoicesLoader />;
 
   return (

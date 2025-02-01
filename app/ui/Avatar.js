@@ -8,25 +8,29 @@ import { signOutAction } from "@/app/_lib/actions";
 import { customErrorToast, customSuccessToast } from "@/app/_lib/helpers";
 import { useRouter } from "next/navigation";
 import blackAvatar from "@/public/blank_avatar.png";
+import { useQueryClient } from "@tanstack/react-query";
 
-function Avatar({ user_profile, blurDataUrl, isThereDP }) {
+function Avatar({ user_profile, blurDataUrl, isThereDp }) {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const pathname = usePathname();
   const [state, formAction, isSigningOut] = useActionState(signOutAction, null);
   const router = useRouter();
+const queryClient =  useQueryClient()
+ 
 
   const toggleSetting = () => setIsSettingOpen((cur) => !cur);
 
   useEffect(() => {
     if (state === undefined || state === null) return;
     if (state?.success) {
+      queryClient.clear();
       router.push("/user/signin");
       customSuccessToast(state?.message);
     }
     if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
 
-  
+
 
   //   if we click on any other place on the screen apart from the settings, the menu should close
   useEffect(() => {
@@ -45,7 +49,7 @@ function Avatar({ user_profile, blurDataUrl, isThereDP }) {
     <div className="avatar flex flex-col relative">
       <div onClick={toggleSetting} className="flex items-center gap-3">
         <div className="relative w-[32px] h-[32px] rounded-full overflow-hidden">
-          {isThereDP ? (
+          {isThereDp ? (
             <Image
               src={user_profile?.avatar_url}
               alt="avatar"
