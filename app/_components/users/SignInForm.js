@@ -37,7 +37,7 @@ function SigninForm() {
   
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12">
+    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12  ">
       <div className="flex flex-col  h-screen gap-8 justify-center w-full">
         {/* Logo */}
         <div className="flex flex-col items-center gap-4">
@@ -59,9 +59,9 @@ function SigninForm() {
          */}
 
         <div>
-          <form action={formAction}>
+          <form action={formAction} className='px-8'>
             {/* Email */}
-            <div className="space-y-5 mb-2">
+            <div className="space-y-5 mb-2 ">
               <div className="field">
                 <div className="label_and_error">
                   <label htmlFor="email">Email address </label>
