@@ -107,7 +107,7 @@ function InvoiceForm() {
     setPaymentTerms(terms);
   };
 
-  function onSubmitDraft() {
+   function onSubmitDraft() {
     setIsSubmittingDraft(true);
     const data = getValues();
     const modifiedData = {
@@ -131,32 +131,39 @@ function InvoiceForm() {
     });
   }
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     const modifiedData = {
       ...data,
       id: formType === "create" ? generateInvoiceId() : formDataToEdit?.id,
       status: "pending",
       invoice: { ...data?.invoice, paymentTerms, issueDate: `${issueDate}` },
     };
-
-    addInvoiceAction(modifiedData, formType).then((res) => {
+  
+    try {
+      const res = await addInvoiceAction(modifiedData, formType);
+      
       if (res?.success) {
-        if (formType === "create") {
-          queryClient.invalidateQueries({ queryKey: ["invoices"] });
-        } else {
-          queryClient.invalidateQueries({ queryKey: ["invoice"] });
-          queryClient.invalidateQueries({ queryKey: ["invoices"] });
-          reset();
-        }
-        customSuccessToast(res?.message);
+        // Wait for queries to be invalidated
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["invoices"] }),
+          formType === "edit" && queryClient.invalidateQueries({ queryKey: ["invoice"] })
+        ]);
+  
+        // Reset form and show success message
         reset();
+        customSuccessToast(res?.message);
+        
+        // Handle form state
         dispatch(onToggleInvoiceForm());
-
-        if (formType === "edit") dispatch(clearForm());
+        if (formType === "edit") {
+          dispatch(clearForm());
+        }
       } else {
         customErrorToast(res?.message);
       }
-    });
+    } catch (error) {
+      customErrorToast("An error occurred while saving the invoice");
+    }
   }
 
   function onDiscard() {

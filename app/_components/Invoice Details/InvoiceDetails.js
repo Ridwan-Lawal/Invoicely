@@ -65,7 +65,12 @@ function InvoiceDetails({ invoiceId }) {
   return (
     <div className="pb-36 md:pb-20">
       {/* back-button */}
-      <button onClick={() => router.back()} className="btn btn-back">
+      <button onClick={() => {
+      queryClient.invalidateQueries({queryKey:['invoices']})
+        router.back();
+        queryClient.invalidateQueries({queryKey:['invoices']})
+      
+      }} className="btn btn-back">
         <ChevronLeft className="size-4 text-color-01" /> <span>Go back</span>
       </button>
 

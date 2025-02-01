@@ -9,7 +9,7 @@ import { customErrorToast, customSuccessToast } from "@/app/_lib/helpers";
 import { useRouter } from "next/navigation";
 import blackAvatar from "@/public/blank_avatar.png";
 
-function Avatar({ user_profile, blurDataUrl }) {
+function Avatar({ user_profile, blurDataUrl, isThereDP }) {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const pathname = usePathname();
   const [state, formAction, isSigningOut] = useActionState(signOutAction, null);
@@ -25,6 +25,8 @@ function Avatar({ user_profile, blurDataUrl }) {
     }
     if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
+
+  
 
   //   if we click on any other place on the screen apart from the settings, the menu should close
   useEffect(() => {
@@ -43,7 +45,7 @@ function Avatar({ user_profile, blurDataUrl }) {
     <div className="avatar flex flex-col relative">
       <div onClick={toggleSetting} className="flex items-center gap-3">
         <div className="relative w-[32px] h-[32px] rounded-full overflow-hidden">
-          {user_profile?.avatar_url ? (
+          {isThereDP ? (
             <Image
               src={user_profile?.avatar_url}
               alt="avatar"

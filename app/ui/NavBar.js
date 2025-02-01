@@ -8,11 +8,13 @@ import Link from "next/link";
 
 async function NavBar() {
   const user_profile = await getProfile();
+  console.log(user_profile?.avatar_url.includes('undefined'), 'Rates');
+  const isThereDP =  !user_profile?.avatar_url.includes('undefined');
   const blurDataUrl =
-    user_profile?.avatar_url && (await getBase64(user_profile?.avatar_url));
+ isThereDP && (await getBase64(user_profile?.avatar_url));
 
   return (
-    <nav className="nav lgl:rounded-r-3xl lgl:w-[103px] ">
+    <nav className="nav lgl:rounded-r-3xl lgl:w-[103px]">
       {/* logo */}
 
       <div className="relative overflow-hidden rounded-r-[20px] flex flex-col items-center justify-center w-[72px] h-[73px] md:h-[80px] lgl:w-[103px] lgl:h-[103px] md:w-[80px] ">
@@ -35,7 +37,7 @@ async function NavBar() {
         </div>
 
         {/* Avatar */}
-        <Avatar user_profile={user_profile} blurDataUrl={blurDataUrl} />
+        <Avatar user_profile={user_profile} isThereDp={isThereDP} blurDataUrl={blurDataUrl} />
       </div>
     </nav>
   );
