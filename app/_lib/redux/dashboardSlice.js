@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isThemeDark: false,
+  isDeleteModalOpen: false,
 };
 
 const dashboardSlice = createSlice({
@@ -14,11 +15,17 @@ const dashboardSlice = createSlice({
     onUpdateTheme(state, action) {
       state.isThemeDark = action.payload;
     },
+    onToggleDeleteModal(state) {
+      state.isDeleteModalOpen = !state.isDeleteModalOpen;
+    },
   },
 });
 
-export const { onToggleTheme, onUpdateTheme } = dashboardSlice.actions;
+export const { onToggleTheme, onUpdateTheme, onToggleDeleteModal } =
+  dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
 
 export const getTheme = (store) => store.dashboard;
+
+export const getDeleteModalValue = (store) => store.dashboard.isDeleteModalOpen;

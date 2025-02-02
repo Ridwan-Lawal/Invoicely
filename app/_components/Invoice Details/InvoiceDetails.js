@@ -10,6 +10,10 @@ import {
   formatCurrency,
   paymentDue,
 } from "@/app/_lib/helpers";
+import {
+  getDeleteModalValue,
+  onToggleDeleteModal,
+} from "@/app/_lib/redux/dashboardSlice";
 import { onToggleInvoiceForm } from "@/app/_lib/redux/formSlice";
 import { editForm } from "@/app/_lib/redux/formSlice";
 import InvoiceLoader from "@/app/ui/InvoiceLoader";
@@ -20,7 +24,7 @@ import { format } from "date-fns";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function InvoiceDetails({ invoiceId }) {
   const router = useRouter();
@@ -31,9 +35,8 @@ function InvoiceDetails({ invoiceId }) {
   });
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleToggleDeleteModal = () => setIsDeleteModalOpen((cur) => !cur);
+  const isDeleteModalOpen = useSelector(getDeleteModalValue);
 
   // markPaid
   const { formAction: paidFormAction, isPending: isMarkingAsPaid } =
@@ -65,12 +68,14 @@ function InvoiceDetails({ invoiceId }) {
   return (
     <div className="pb-36 md:pb-20">
       {/* back-button */}
-      <button onClick={() => {
-      queryClient.invalidateQueries({queryKey:['invoices']})
-        router.back();
-        queryClient.invalidateQueries({queryKey:['invoices']})
-      
-      }} className="btn btn-back">
+      <button
+        onClick={() => {
+          queryClient.invalidateQueries({ queryKey: ["invoices"] });
+          router.back();
+          queryClient.invalidateQueries({ queryKey: ["invoices"] });
+        }}
+        className="btn btn-back"
+      >
         <ChevronLeft className="size-4 text-color-01" /> <span>Go back</span>
       </button>
 
@@ -87,7 +92,10 @@ function InvoiceDetails({ invoiceId }) {
           <button onClick={() => handleEditInvoice()} className="btn btn-edit">
             Edit
           </button>
-          <button onClick={handleToggleDeleteModal} className="btn btn-delete">
+          <button
+            onClick={() => dispatch(onToggleDeleteModal())}
+            className="btn btn-delete"
+          >
             Delete
           </button>
           {invoiceData?.status !== "paid" &&
@@ -161,7 +169,9 @@ function InvoiceDetails({ invoiceId }) {
             {/* sent to  */}
             <div className="flex flex-col gap-[13px] md:order-3">
               <p className="capitalize variant-2">sent to</p>
-              <p className="variant-3">{invoiceData?.client?.email}</p>
+              <p className="variant-3  break-words">
+                {invoiceData?.client?.email}
+              </p>
             </div>
           </div>
         </div>
@@ -205,7 +215,7 @@ function InvoiceDetails({ invoiceId }) {
             </div>
           </div>
           {/*================== ground total ===============*/}
-          <div className="grand-total bg-color-13 dark:bg-color-08 rounded-b-lg h-[80px] flex items-center justify-between px-7">
+          <div className="grand-total bg-color-13 dark:bg-color-08 rounded-b-lg h-[80px] flex items-center justify-between px-7 gap-4">
             <p className="text-[13px] leading-[18px] tracking-[-0.1px] font-medium text-white">
               Grand Total
             </p>
@@ -214,11 +224,7 @@ function InvoiceDetails({ invoiceId }) {
           </div>
         </div>
       </div>
-      <DeleteModal
-        invoiceId={invoiceId}
-        isDeleteModalOpen={isDeleteModalOpen}
-        onToggleDeleteModal={handleToggleDeleteModal}
-      />
+      <DeleteModal invoiceId={invoiceId} />
     </div>
   );
 }

@@ -2,10 +2,18 @@
 
 import { useInvoiceMutations } from "@/app/_hooks/useInvoiceMutations";
 import { deleteInvoiceAction } from "@/app/_lib/actions";
+import {
+  getDeleteModalValue,
+  onToggleDeleteModal,
+} from "@/app/_lib/redux/dashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-function DeleteModal({ invoiceId, isDeleteModalOpen, onToggleDeleteModal }) {
+function DeleteModal({ invoiceId }) {
   const { formAction: deleteAction, isPending: isDeleting } =
     useInvoiceMutations(deleteInvoiceAction, "delete", onToggleDeleteModal);
+
+  const isDeleteModalOpen = useSelector(getDeleteModalValue);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -25,7 +33,10 @@ function DeleteModal({ invoiceId, isDeleteModalOpen, onToggleDeleteModal }) {
         </p>
 
         <div className="flex items-center justify-end gap-3 mt-8">
-          <button onClick={onToggleDeleteModal} className="btn btn-cancel">
+          <button
+            onClick={() => dispatch(onToggleDeleteModal())}
+            className="btn btn-cancel"
+          >
             Cancel
           </button>
           <form action={deleteAction}>

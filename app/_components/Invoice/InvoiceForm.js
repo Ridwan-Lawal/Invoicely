@@ -85,7 +85,7 @@ function InvoiceForm() {
     resolver: zodResolver(schema),
   });
 
-  console.log(watch())
+  console.log(watch());
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 
@@ -110,7 +110,7 @@ function InvoiceForm() {
     setPaymentTerms(terms);
   };
 
-   function onSubmitDraft() {
+  function onSubmitDraft() {
     setIsSubmittingDraft(true);
     const data = getValues();
     const modifiedData = {
@@ -141,21 +141,22 @@ function InvoiceForm() {
       status: "pending",
       invoice: { ...data?.invoice, paymentTerms, issueDate: `${issueDate}` },
     };
-  
+
     try {
       const res = await addInvoiceAction(modifiedData, formType);
-      
+
       if (res?.success) {
         // Wait for queries to be invalidated
         await Promise.all([
           queryClient.invalidateQueries({ queryKey: ["invoices"] }),
-          formType === "edit" && queryClient.invalidateQueries({ queryKey: ["invoice"] })
+          formType === "edit" &&
+            queryClient.invalidateQueries({ queryKey: ["invoice"] }),
         ]);
-  
+
         // Reset form and show success message
         reset();
         customSuccessToast(res?.message);
-        
+
         // Handle form state
         dispatch(onToggleInvoiceForm());
         if (formType === "edit") {
@@ -591,14 +592,14 @@ function InvoiceForm() {
 
             {/* buttons */}
             <div
-              className={`button-section top-shadow-medium flex items-center gap-[7px] w-full   ${
+              className={`button-section top-shadow-medium flex items-center border relative bottom-0  gap-[7px] w-full   ${
                 formType === "create" ? "justify-between" : "justify-end"
               }`}
             >
               {formType === "create" && (
                 <button
                   type="button"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isSubmittingDraft}
                   onClick={onDiscard}
                   className="btn btn-cancel"
                 >
@@ -622,9 +623,9 @@ function InvoiceForm() {
                       value="submit"
                       type="submit"
                       className="btn btn-paid"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || isSubmittingDraft}
                     >
-                      {isSubmitting ? "Creating invoice..." : "  Save & Send"}
+                      {isSubmitting ? "Saving..." : "  Save & Send"}
                     </button>
                   </>
                 ) : (
