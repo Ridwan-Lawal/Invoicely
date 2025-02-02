@@ -57,8 +57,8 @@ function SignupForm() {
         {/* form
          */}
 
-        <div>
-          <form action={formAction} className='px-8'>
+        <div className="px-8">
+          <form action={formAction}>
             {/* Email */}
             <div className="space-y-5 mb-2">
               <div className="field">

@@ -33,8 +33,7 @@ function SigninForm() {
     } else if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
 
-  console.log(inputs, state)
-  
+  console.log(inputs, state);
 
   return (
     <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto mt-8 pb-12  ">
@@ -58,8 +57,8 @@ function SigninForm() {
         {/* form
          */}
 
-        <div>
-          <form action={formAction} className='px-8'>
+        <div className="px-8">
+          <form action={formAction}>
             {/* Email */}
             <div className="space-y-5 mb-2 ">
               <div className="field">
