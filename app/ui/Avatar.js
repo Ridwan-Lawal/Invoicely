@@ -15,8 +15,7 @@ function Avatar({ user_profile, blurDataUrl, isThereDp }) {
   const pathname = usePathname();
   const [state, formAction, isSigningOut] = useActionState(signOutAction, null);
   const router = useRouter();
-const queryClient =  useQueryClient()
- 
+  const queryClient = useQueryClient();
 
   const toggleSetting = () => setIsSettingOpen((cur) => !cur);
 
@@ -29,8 +28,6 @@ const queryClient =  useQueryClient()
     }
     if (state?.success === false) customErrorToast(state?.message);
   }, [state, router]);
-
-
 
   //   if we click on any other place on the screen apart from the settings, the menu should close
   useEffect(() => {

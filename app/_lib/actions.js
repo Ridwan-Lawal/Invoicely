@@ -238,7 +238,7 @@ export async function signInAction(prevState, formData) {
     return {
       success: false,
       message: error.message,
-      inputs:userCredentials
+      inputs: userCredentials,
     };
   }
 
@@ -247,7 +247,6 @@ export async function signInAction(prevState, formData) {
   return {
     success: true,
     message: `Welcome back, ${data?.user?.user_metadata?.full_name}`,
-    
   };
 }
 
@@ -565,8 +564,6 @@ export async function updateAvatarAction(prevState, formData) {
       avatar_url,
     },
   });
-
-  console.log(avatar_url, data, filename, avatar)
 
   if (error) {
     return {

@@ -85,7 +85,7 @@ function InvoiceForm() {
     resolver: zodResolver(schema),
   });
 
-  console.log(watch());
+  
 
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 
@@ -592,7 +592,7 @@ function InvoiceForm() {
 
             {/* buttons */}
             <div
-              className={`button-section top-shadow-medium flex items-center border relative bottom-0  gap-[7px] w-full   ${
+              className={`button-section top-shadow-medium flex items-center  relative bottom-0  gap-[7px] w-full   ${
                 formType === "create" ? "justify-between" : "justify-end"
               }`}
             >

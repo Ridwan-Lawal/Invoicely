@@ -15,7 +15,6 @@ export function useInvoiceMutations(mutationAction, mutationType) {
     if (state?.success === null || state?.success === undefined) return;
     if (state?.success) {
       {
-        console.log("delettin");
         customSuccessToast(state?.message);
       }
 

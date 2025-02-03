@@ -1,19 +1,21 @@
 import LogoWhite from "@/public/logo-white.svg";
 import Image from "next/image";
 
-import { getBase64, getProfile } from "@/app/_lib/data-service";
+import {
+  convertHeicToJpg,
+  convertImage,
+  getBase64,
+  getProfile,
+} from "@/app/_lib/data-service";
 import Avatar from "@/app/ui/Avatar";
 import ThemeButton from "@/app/ui/ThemeButton";
 import Link from "next/link";
 
 async function NavBar() {
   const user_profile = await getProfile();
-  console.log(user_profile?.avatar_url.includes('undefined'), user_profile);
-  const isThereDP =  !user_profile?.avatar_url.includes('undefined');
-  const blurDataUrl =
- isThereDP && (await getBase64(user_profile?.avatar_url));
 
- console.log(isThereDP, "Yessssssss")
+  const isThereDP = !user_profile?.avatar_url.includes("undefined");
+  const blurDataUrl = isThereDP && (await getBase64(user_profile?.avatar_url));
 
   return (
     <nav className="nav lgl:rounded-r-3xl lgl:w-[103px]">
@@ -39,7 +41,11 @@ async function NavBar() {
         </div>
 
         {/* Avatar */}
-        <Avatar user_profile={user_profile} isThereDp={isThereDP} blurDataUrl={blurDataUrl} />
+        <Avatar
+          user_profile={user_profile}
+          isThereDp={isThereDP}
+          blurDataUrl={blurDataUrl}
+        />
       </div>
     </nav>
   );

@@ -1,5 +1,7 @@
 import { createClient } from "@/app/_lib/supabase/server";
+
 import { redirect } from "next/navigation";
+import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
 import sharp from "sharp";
 
@@ -24,7 +26,6 @@ export async function getBase64(imageUrl) {
     const { base64 } = await getPlaiceholder(Buffer.from(buffer));
     return base64;
   } catch (error) {
-    console.error("Error generating base64:", error);
     return null;
   }
 }
@@ -45,8 +46,6 @@ export async function getInvoiced() {
   if (error) {
     throw new Error(error.message);
   }
-
-  console.log(data, error);
 
   return data;
 }
