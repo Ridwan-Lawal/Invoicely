@@ -85,8 +85,6 @@ function InvoiceForm() {
     resolver: zodResolver(schema),
   });
 
-  
-
   const [isSubmittingDraft, setIsSubmittingDraft] = useState(false);
 
   const { user, client, invoice, items } = errors ?? {};
@@ -570,7 +568,7 @@ function InvoiceForm() {
                           type="button"
                           disabled={isSubmitting}
                           onClick={() => removeItem(index)}
-                          className="border h-fit self-center -mt-3 "
+                          className=" h-fit self-center -mt-3 "
                         >
                           <Image src={DeleteIcon} alt="delete" quality={100} />
                         </button>
